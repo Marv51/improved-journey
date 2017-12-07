@@ -1,7 +1,6 @@
-version: '2'
+version: '3.4'
 services:
- legacywebshop:
-   image: eureka-server-vis
+ eureka-server:
+   image: eureka-server
    ports:
      - "8761:8761"
-     - "8080:8080"

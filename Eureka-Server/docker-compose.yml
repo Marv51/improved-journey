@@ -1,0 +1,7 @@
+version: '2'
+services:
+ legacywebshop:
+   image: eureka-server-vis
+   ports:
+     - "8761:8761"
+     - "8080:8080"

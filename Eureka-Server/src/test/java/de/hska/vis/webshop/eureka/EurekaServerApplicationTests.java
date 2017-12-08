@@ -1,4 +1,4 @@
-package vislab_webshop.zuulserver;
+package de.hska.vis.webshop.eureka;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ZuulServerApplicationTests {
+public class EurekaServerApplicationTests {
 
 	@Test
 	public void contextLoads() {

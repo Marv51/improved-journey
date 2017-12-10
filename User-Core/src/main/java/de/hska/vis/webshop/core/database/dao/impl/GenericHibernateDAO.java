@@ -1,6 +1,5 @@
 package de.hska.vis.webshop.core.database.dao.impl;
 
-import com.sun.istack.internal.Nullable;
 import de.hska.vis.webshop.core.database.dao.IGenericDAO;
 import de.hska.vis.webshop.core.database.util.HibernateUtil;
 import org.hibernate.Criteria;
@@ -69,7 +68,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     @SuppressWarnings("unchecked")
-    @Nullable
     public E getObjectByName(String name) {
         Session session = getCurrentSession();
         try {
@@ -123,7 +121,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     @SuppressWarnings("unchecked")
-    @Nullable
     public List<E> get(E entity) {
         Session session = getCurrentSession();
         try {
@@ -142,7 +139,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     @SuppressWarnings("unchecked")
-    @Nullable
     public List<E> getObjectList() {
         Session session = getCurrentSession();
 
@@ -161,7 +157,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     @SuppressWarnings("unchecked")
-    @Nullable
     public List<E> getSortedList(String sortOrder, String sortProperty) {
         Session session = getCurrentSession();
 

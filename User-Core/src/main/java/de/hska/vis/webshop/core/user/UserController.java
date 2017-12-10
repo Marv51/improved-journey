@@ -1,9 +1,9 @@
 package de.hska.vis.webshop.core.user;
 
+import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.IUserDAO;
 import de.hska.vis.webshop.core.database.model.IUser;
 import de.hska.vis.webshop.core.database.model.impl.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
 
-    @Autowired
-    private IUserDAO dao;
+    private IUserDAO dao = DaoFactory.getUserDao();
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     public ResponseEntity<IUser> getUser(@PathVariable String username) {

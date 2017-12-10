@@ -1,6 +1,5 @@
 package de.hska.vis.webshop.core.database.dao;
 
-import com.sun.istack.internal.Nullable;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -64,7 +63,6 @@ public interface IGenericDAO<E, PK extends Serializable> {
      * @param sortProperty the key property after which should be sorted
      * @return a list of all instances, sorted by sortProperty in sortOrder
      */
-    @Nullable
     List<E> getSortedList(String sortOrder, String sortProperty);
 
     /**

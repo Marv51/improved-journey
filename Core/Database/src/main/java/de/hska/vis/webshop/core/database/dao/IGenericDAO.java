@@ -1,7 +1,6 @@
 package de.hska.vis.webshop.core.database.dao;
 
 import org.hibernate.Session;
-import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,7 +14,6 @@ import java.util.List;
  * @param <PK> the class of the pojo's id property.
  * @author knad0001
  */
-@Repository
 public interface IGenericDAO<E, PK extends Serializable> {
 
     String ASCENDING_SORTING = "asc";

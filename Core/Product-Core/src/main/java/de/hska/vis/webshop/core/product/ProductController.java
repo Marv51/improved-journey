@@ -1,5 +1,10 @@
 package de.hska.vis.webshop.core.product;
 
+import de.hska.vis.webshop.core.database.dao.DaoFactory;
+import de.hska.vis.webshop.core.database.dao.IProductDAO;
+import de.hska.vis.webshop.core.database.model.IProduct;
+import de.hska.vis.webshop.core.database.model.impl.Product;
+import de.hska.vis.webshop.core.util.HelperUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private IProductDAO dao = DaoFactory.getProductDao();
+    private HelperUtility<IProduct, Integer> helper = new HelperUtility<>();
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ResponseEntity<Void> saveProduct(Product product) {
@@ -25,20 +31,7 @@ public class ProductController {
 
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<IProduct> getProductById(@PathVariable String stringId) {
-        HttpStatus code = HttpStatus.OK;
-        IProduct product;
-        try {
-            Integer parsedId = Integer.parseInt(stringId);
-            product = dao.getObjectById(parsedId);
-            if (product == null) {
-                code = HttpStatus.NOT_FOUND;
-            }
-        } catch (NumberFormatException ex) {
-            // invalid number supplied; returning null and HTTP/400
-            product = null;
-            code = HttpStatus.BAD_REQUEST;
-        }
-        return new ResponseEntity<IProduct>(product, code);
+        return helper.getResponse(stringId, dao, Integer::parseInt);
     }
 
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.PUT)
@@ -64,7 +57,7 @@ public class ProductController {
             product = null;
             code = HttpStatus.BAD_REQUEST;
         }
-        return new ResponseEntity<IProduct>(product, code);
+        return new ResponseEntity<>(product, code);
     }
 
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.DELETE)

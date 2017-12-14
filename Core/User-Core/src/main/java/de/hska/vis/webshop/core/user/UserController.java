@@ -4,6 +4,7 @@ import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.IUserDAO;
 import de.hska.vis.webshop.core.database.model.IUser;
 import de.hska.vis.webshop.core.database.model.impl.User;
+import de.hska.vis.webshop.core.util.HelperUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private IUserDAO dao = DaoFactory.getUserDao();
+    private HelperUtility<IUser, Integer> helper = new HelperUtility<>();
 
     @RequestMapping(value = "/users/{username}", method = RequestMethod.GET)
     public ResponseEntity<IUser> getUser(@PathVariable String username) {
@@ -27,20 +29,7 @@ public class UserController {
 
     @RequestMapping(value = "/users/id/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<IUser> getUserById(@PathVariable String stringId) {
-        HttpStatus code = HttpStatus.OK;
-        IUser user;
-        try {
-            Integer parsedId = Integer.parseInt(stringId);
-            user = dao.getObjectById(parsedId);
-            if (user == null) {
-                code = HttpStatus.NOT_FOUND;
-            }
-        } catch (NumberFormatException ex) {
-            // invalid number supplied; returning null and HTTP/400
-            user = null;
-            code = HttpStatus.BAD_REQUEST;
-        }
-        return new ResponseEntity<>(user, code);
+        return helper.getResponse(stringId, dao, Integer::parseInt);
     }
 
     @RequestMapping(value = "/users/", method = RequestMethod.PUT)

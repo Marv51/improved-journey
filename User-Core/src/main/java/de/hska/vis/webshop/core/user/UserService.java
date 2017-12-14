@@ -7,6 +7,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class UserService {
 
     public static void main(String[] args) {
+    	UserService us = new UserService();
+    	us.waitSomeSecs();
         SpringApplication.run(UserService.class, args);
+    }
+    
+    
+    private synchronized void waitSomeSecs() {
+    	try {
+			wait(15 * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 }

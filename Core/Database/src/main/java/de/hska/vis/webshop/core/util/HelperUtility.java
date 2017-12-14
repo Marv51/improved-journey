@@ -4,9 +4,10 @@ import de.hska.vis.webshop.core.database.dao.IGenericDAO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
-public class HelperUtility<T, P extends Number> {
+public class HelperUtility<T, P extends Serializable> {
     public ResponseEntity<T> getResponse(String stringId, IGenericDAO<T, P> dao, Function<String, P> castStringTo) {
         HttpStatus code = HttpStatus.OK;
         T responseObject;

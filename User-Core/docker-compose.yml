@@ -1,6 +1,11 @@
-version: '3.4'
+version: '2'
 services:
- user:
-   image: user
+ web-shop-db-image:
+   image: mavogel/hska-vis-web-shop-db-image
+   environment:
+     MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
+     MYSQL_DATABASE: webshop
+     MYSQL_USER: webshopuser
+     MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
    ports:
-     - "8080:8080"
+     - "3306:3306"

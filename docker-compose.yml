@@ -19,7 +19,7 @@ services:
       - "database"
     
  user:
-   build: User-Core/.
+   build: Core/User-Core/.
    ports:
      - "8080:8080"
    depends_on:

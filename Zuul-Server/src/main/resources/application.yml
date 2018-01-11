@@ -8,6 +8,7 @@ eureka:
     healthCheckUrlPath: /health
 
 zuul:
-  ignored-services: '*'
   routes:
-    user-proxy: /user-api/**
+    user-service:
+      path: /users/**
+      serviceId: user-service

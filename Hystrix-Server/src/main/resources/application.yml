@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 10
+    statusPageUrlPath: /info
+    healthCheckUrlPath: /health
+
+zuul:
+  routes:
+    user-service:
+      path: /users/**
+      serviceId: user-service

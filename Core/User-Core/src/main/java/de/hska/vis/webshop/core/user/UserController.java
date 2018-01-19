@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 @RestController
 public class UserController {
 
@@ -32,6 +34,7 @@ public class UserController {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }
 
+    @HystrixCommand(fallbackMethod = "fallbackGetUsers")
     @RequestMapping(value = "/users/", method = RequestMethod.PUT)
     public ResponseEntity<Void> getUserById(User user) {
         HttpStatus code;

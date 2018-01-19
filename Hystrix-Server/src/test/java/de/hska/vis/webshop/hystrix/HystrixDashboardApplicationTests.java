@@ -1,4 +1,4 @@
-package de.hska.vis.webshop.zuul;
+package de.hska.vis.webshop.hystrix;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,7 +7,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class ZuulServerApplicationTests {
+public class HystrixDashboardApplicationTests {
 
 	@Test
 	public void contextLoads() {

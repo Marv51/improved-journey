@@ -1,6 +1,6 @@
 spring:
   application:
-    name: zuul
+    name: hystrix
   cloud:
     config:
       enabled: false

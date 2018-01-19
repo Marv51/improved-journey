@@ -3,24 +3,26 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>webshop.core</artifactId>
+    <groupId>de.hska.vis</groupId>
+    <artifactId>webshop</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Core</name>
-    <description>Parent of all core services.</description>
+    <name>Micro Webshop</name>
+    <description>Parent of the whole project.</description>
 
     <modules>
-        <module>User-Core</module>
-        <module>Product-Core</module>
-        <module>Category-Core</module>
-        <module>Database</module>
+        <module>Core</module>
+        <module>Eureka-Server</module>
+        <module>Hystrix-Server</module>
+        <module>Zuul-Server</module>
     </modules>
 
     <parent>
-        <groupId>de.hska.vis</groupId>
-        <artifactId>webshop</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.1.RELEASE</version>
+        <relativePath/>
     </parent>
 
     <properties>

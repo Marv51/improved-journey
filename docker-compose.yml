@@ -17,11 +17,11 @@ services:
             - "8761:8761"
         depends_on:
             - "database"
-            
-#    hystrix:
-#        build: Hystrix-Server/.
-#        ports:
-#            - "9000:9000"
+
+    hystrix:
+        build: Hystrix-Server/.
+        ports:
+            - "9000:9000"
 
     user:
         build: Core/User-Core/.
@@ -29,11 +29,11 @@ services:
             - "8083:8080"
         depends_on:
             - "eureka"
-#            - "hystrix"
+            - "hystrix"
         links:
             - "database:database"
             - "eureka:eureka"
-#            - "hystrix:hystrix"
+            - "hystrix:hystrix"
 
     category:
         build: Core/Category-Core/.
@@ -56,10 +56,10 @@ services:
             - "eureka:eureka"
     zuul:
         build: Zuul-Server/.
-        ports: 
+        ports:
             - "8080:8081"
         depends_on:
             - "eureka"
         links:
-            - "eureka:eureka" 
+            - "eureka:eureka"
             - "user:user"

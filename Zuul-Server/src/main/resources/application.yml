@@ -1,14 +1,24 @@
 server:
   port: 8081
 
-eureka:
-  instance:
-    leaseRenewalIntervalInSeconds: 10
-    statusPageUrlPath: /info
-    healthCheckUrlPath: /health
+
+info:
+  component: Edge Server
 
 zuul:
   routes:
     user-service:
       path: /users/**
       serviceId: user-service
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+    registerWithEureka: false
+
+
+ribbon:
+  eureka:
+    enabled: true

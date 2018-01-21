@@ -18,22 +18,22 @@ services:
         depends_on:
             - "database"
             
-    hystrix:
-        build: Hystrix-Server/.
-        ports:
-            - "9000:9000"
+#    hystrix:
+#        build: Hystrix-Server/.
+#        ports:
+#            - "9000:9000"
 
     user:
         build: Core/User-Core/.
         ports:
-            - "8080:8080"
+            - "8083:8080"
         depends_on:
             - "eureka"
-            - "hystrix"
+#            - "hystrix"
         links:
             - "database:database"
             - "eureka:eureka"
-            - "hystrix:hystrix"
+#            - "hystrix:hystrix"
 
     category:
         build: Core/Category-Core/.
@@ -54,4 +54,12 @@ services:
         links:
             - "database:database"
             - "eureka:eureka"
-
+    zuul:
+        build: Zuul-Server/.
+        ports: 
+            - "8080:8081"
+        depends_on:
+            - "eureka"
+        links:
+            - "eureka:eureka" 
+            - "user:user"

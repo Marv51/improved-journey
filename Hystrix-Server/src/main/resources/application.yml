@@ -1,8 +1,10 @@
 server:
   port: 9000
+
 spring:
   application:
-    name: dashboard
+    name: hystrix
+
 eureka:
   client:
     serviceUrl:
@@ -11,4 +13,4 @@ eureka:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 5
     metadataMap:
-      instanceId: ${spring.application.name}:${random.value}
+      instanceId: "${spring.application.name}:${random.value}"

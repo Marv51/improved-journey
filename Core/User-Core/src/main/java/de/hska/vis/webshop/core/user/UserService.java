@@ -8,7 +8,7 @@ public class UserService {
 
     public static void main(String[] args) {
         try {
-            Thread.sleep(15 * 1000);
+            Thread.sleep(30 * 1000);
         } catch (InterruptedException ignored) {}
         SpringApplication.run(UserService.class, args);
     }

@@ -11,6 +11,9 @@ import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboar
 public class HystrixDashboardApplication {
 
     public static void main(String[] args) {
+        try {
+            Thread.sleep(30 * 1000);
+        } catch (InterruptedException ignored) {}
         SpringApplication.run(HystrixDashboardApplication.class, args);
     }
 }

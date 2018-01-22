@@ -22,6 +22,8 @@ services:
         build: Hystrix-Server/.
         ports:
             - "9000:9000"
+        links:
+            - "eureka:eureka"
 
     user:
         build: Core/User-Core/.

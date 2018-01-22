@@ -9,7 +9,9 @@ zuul:
   routes:
     user-service:
       path: /users/**
-      serviceId: user-service
+#      serviceId: user-service
+      url: http://user:8080
+      strip-prefix: false
 
 
 eureka:

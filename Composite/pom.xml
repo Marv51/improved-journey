@@ -4,17 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>webshop.core</artifactId>
+    <artifactId>webshop.composite</artifactId>
     <packaging>pom</packaging>
 
-    <name>Core</name>
-    <description>Parent of all core services.</description>
+    <name>Composite</name>
+    <description>Parent of all composite services.</description>
 
     <modules>
-        <module>User-Core</module>
-        <module>Product-Core</module>
-        <module>Category-Core</module>
-        <module>Database</module>
+        <module>Search-Service</module>
     </modules>
 
     <parent>

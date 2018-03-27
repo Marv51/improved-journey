@@ -5,5 +5,10 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
+    healthcheck:
+      enabled: true
+    instance:
+    status-page-url-path: /info
+    health-check-url-path: /health
   server:
     waitTimeInMsWhenSyncEmpty: 0

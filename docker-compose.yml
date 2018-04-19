@@ -24,6 +24,8 @@ services:
             - "9000:9000"
         links:
             - "eureka:eureka"
+            - "user:user"
+            - "category:category"
 
     user:
         build: Core/User-Core/.
@@ -31,11 +33,9 @@ services:
             - "8083:8080"
         depends_on:
             - "eureka"
-            - "hystrix"
         links:
             - "database:database"
             - "eureka:eureka"
-            - "hystrix:hystrix"
 
     category:
         build: Core/Category-Core/.

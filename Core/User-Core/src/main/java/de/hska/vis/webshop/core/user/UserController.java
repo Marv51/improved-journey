@@ -1,6 +1,5 @@
 package de.hska.vis.webshop.core.user;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.IUserDAO;
 import de.hska.vis.webshop.core.database.model.IUser;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class UserController {
@@ -28,13 +28,13 @@ public class UserController {
                 : HttpStatus.OK;
         return new ResponseEntity<>(user, code);
     }
-
+    
     @HystrixCommand
     @RequestMapping(value = "/users/id/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<IUser> getUserById(@PathVariable String stringId) {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }
-
+    
     @HystrixCommand
     @RequestMapping(value = "/users/", method = RequestMethod.PUT)
     public ResponseEntity<Void> getUserById(User user) {

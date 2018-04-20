@@ -1,5 +1,9 @@
 server:
   port: 8989
+  
+spring:
+  application:
+    name: turbine
 
 eureka:
   client:
@@ -13,5 +17,5 @@ eureka:
     
 turbine:
   aggregator:
-    clusterConfig: ORDER
-appConfig: order
+    clusterConfig: WEBSHOP
+  appConfig: USER-SERVICE, CATEGORY-SERVICE, PRODUCT-SERVICE

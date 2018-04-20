@@ -26,6 +26,16 @@ services:
             - "eureka:eureka"
             - "user:user"
             - "category:category"
+            - "turbine:turbine"
+
+    turbine:
+        build: Turbine/.
+        ports:
+            - "8989:8989"
+        links:
+            - "eureka:eureka"
+            - "user:user"
+            - "category:category"
 
     user:
         build: Core/User-Core/.

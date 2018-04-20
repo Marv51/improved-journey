@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class ProductController {
@@ -29,6 +30,7 @@ public class ProductController {
         return new ResponseEntity<>(code);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<IProduct> getProductById(@PathVariable String stringId) {
         return helper.getResponse(stringId, dao, Integer::parseInt);

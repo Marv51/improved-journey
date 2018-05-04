@@ -8,9 +8,11 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://eureka:8761/eureka/
   instance:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 5
+    status-page-url-path: /info
+    health-check-url-path: /health
     metadataMap:
       instanceId: "${spring.application.name}:${random.value}"

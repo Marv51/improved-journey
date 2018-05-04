@@ -12,5 +12,7 @@ eureka:
   instance:
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 5
+    status-page-url-path: /info
+    health-check-url-path: /health
     metadataMap:
       instanceId: "${spring.application.name}:${random.value}"

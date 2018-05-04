@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 
 @RestController
 public class CategoryController {
@@ -18,6 +19,7 @@ public class CategoryController {
     private ICategoryDAO dao = DaoFactory.getCategoryDao();
     private HelperUtility<ICategory, Integer> helper = new HelperUtility<>();
 
+    
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     public ResponseEntity<Void> saveCategory(Category category) {
         HttpStatus code;
@@ -29,6 +31,7 @@ public class CategoryController {
         return new ResponseEntity<>(code);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/category/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<ICategory> getCategoryById(@PathVariable String stringId) {
         return helper.getResponse(stringId, dao, Integer::parseInt);

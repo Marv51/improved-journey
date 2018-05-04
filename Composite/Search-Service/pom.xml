@@ -23,7 +23,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>de.hska.vis.webshop</groupId>
+            <groupId>de.hska.vis</groupId>
             <artifactId>core.database</artifactId>
             <version>${project.version}</version>
         </dependency>

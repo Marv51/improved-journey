@@ -4,6 +4,11 @@ server:
 eureka:
   client:
     registerWithEureka: false
-    fetchRegistry: false
+    fetchRegistry: true
+    healthcheck:
+      enabled: true
+    instance:
+    status-page-url-path: /info
+    health-check-url-path: /health
   server:
     waitTimeInMsWhenSyncEmpty: 0

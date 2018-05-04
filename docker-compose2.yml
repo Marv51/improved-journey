@@ -25,17 +25,6 @@ services:
         links:
             - "eureka:eureka"
             - "user:user"
-            - "category:category"
-            - "turbine:turbine"
-
-    turbine:
-        build: Turbine/.
-        ports:
-            - "8989:8989"
-        links:
-            - "eureka:eureka"
-            - "user:user"
-            - "category:category"
 
     user:
         build: Core/User-Core/.
@@ -47,25 +36,6 @@ services:
             - "database:database"
             - "eureka:eureka"
 
-    category:
-        build: Core/Category-Core/.
-        ports:
-            - "8081:8080"
-        depends_on:
-            - "eureka"
-        links:
-            - "database:database"
-            - "eureka:eureka"
-
-    product:
-        build: Core/Product-Core/.
-        ports:
-            - "8082:8080"
-        depends_on:
-            - "eureka"
-        links:
-            - "database:database"
-            - "eureka:eureka"
     zuul:
         build: Zuul-Server/.
         ports:

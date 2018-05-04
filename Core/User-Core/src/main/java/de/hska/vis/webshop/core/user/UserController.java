@@ -1,5 +1,6 @@
 package de.hska.vis.webshop.core.user;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.IUserDAO;
 import de.hska.vis.webshop.core.database.model.IUser;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -28,15 +30,15 @@ public class UserController {
                 : HttpStatus.OK;
         return new ResponseEntity<>(user, code);
     }
-    
+
     @HystrixCommand
     @RequestMapping(value = "/users/id/{stringId}", method = RequestMethod.GET)
     public ResponseEntity<IUser> getUserById(@PathVariable String stringId) {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }
-    
+
     @HystrixCommand
-    @RequestMapping(value = "/users/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public ResponseEntity<Void> getUserById(User user) {
         HttpStatus code;
         if (dao.saveObject(user)) {
@@ -45,5 +47,10 @@ public class UserController {
             code = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(code);
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ResponseEntity<List<IUser>> getUserList() {
+        return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);
     }
 }

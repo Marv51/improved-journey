@@ -1,5 +1,6 @@
 package de.hska.vis.webshop.core.product;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.IProductDAO;
 import de.hska.vis.webshop.core.database.model.IProduct;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import java.util.List;
 
 @RestController
 public class ProductController {
@@ -77,5 +79,10 @@ public class ProductController {
             code = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(code);
+    }
+
+    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    public ResponseEntity<List<IProduct>> getProductList() {
+        return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);
     }
 }

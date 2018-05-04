@@ -1,5 +1,6 @@
 package de.hska.vis.webshop.core.category;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import de.hska.vis.webshop.core.database.dao.DaoFactory;
 import de.hska.vis.webshop.core.database.dao.ICategoryDAO;
 import de.hska.vis.webshop.core.database.model.ICategory;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
+import java.util.List;
 
 @RestController
 public class CategoryController {
@@ -19,7 +21,7 @@ public class CategoryController {
     private ICategoryDAO dao = DaoFactory.getCategoryDao();
     private HelperUtility<ICategory, Integer> helper = new HelperUtility<>();
 
-    
+
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     public ResponseEntity<Void> saveCategory(Category category) {
         HttpStatus code;
@@ -52,5 +54,10 @@ public class CategoryController {
             code = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(code);
+    }
+
+    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    public ResponseEntity<List<ICategory>> getCategoryList() {
+        return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);
     }
 }

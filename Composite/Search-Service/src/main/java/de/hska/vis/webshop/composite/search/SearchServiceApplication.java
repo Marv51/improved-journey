@@ -9,6 +9,8 @@ import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 
+import static de.hska.vis.webshop.core.util.StarterUtility.delayComposite;
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableCircuitBreaker
@@ -19,11 +21,7 @@ import org.springframework.cloud.netflix.ribbon.RibbonClient;
 public class SearchServiceApplication {
 
     public static void main(String[] args) {
-        try {
-            // given the 30s runup time from the cores
-            // no need to start at the same time as them
-            Thread.sleep(60 * 1000);
-        } catch (InterruptedException ignored) {}
+        delayComposite();
         SpringApplication.run(SearchServiceApplication.class, args);
     }
 }

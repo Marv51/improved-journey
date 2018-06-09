@@ -66,6 +66,21 @@ services:
         links:
             - "database:database"
             - "eureka:eureka"
+
+    search:
+        build: Composite/Search-Service/.
+        ports:
+            - "8084:8080"
+        depends_on:
+            - "eureka"
+            - "hystrix"
+            - "user"
+            - "category"
+            - "product"
+        links:
+            - "eureka:eureka"
+            - "hystrix:hystrix"
+
     zuul:
         build: Zuul-Server/.
         ports:

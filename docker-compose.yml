@@ -15,8 +15,6 @@ services:
         build: Eureka-Server/.
         ports:
             - "8761:8761"
-        depends_on:
-            - "database"
 
     hystrix:
         build: Hystrix-Server/.

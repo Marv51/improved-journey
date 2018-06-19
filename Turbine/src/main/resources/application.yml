@@ -7,11 +7,15 @@ spring:
 
 eureka:
   client:
+    registerWithEureka: true
+    fetchRegistry: true
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka/    
+      defaultZone: http://eureka:8761/eureka/   
+       
   server:
     waitTimeInMsWhenSyncEmpty: 0
   instance:
+    hostname: localhost
     preferIpAddress: true
     leaseRenewalIntervalInSeconds: 5
     
@@ -19,3 +23,10 @@ turbine:
   aggregator:
     clusterConfig: WEBSHOP
   appConfig: USER-SERVICE, CATEGORY-SERVICE, PRODUCT-SERVICE
+  ConfigPropertyBasedDiscovery:
+    WEBSHOP:
+      instances:  USER-SERVICE
+    default:
+      instances:  USER-SERVICE
+      
+ #turbine.ConfigPropertyBasedDiscovery.WEBSHOP.instances

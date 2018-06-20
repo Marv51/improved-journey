@@ -21,6 +21,7 @@ public class ProductController {
     private IProductDAO dao = DaoFactory.getProductDao();
     private HelperUtility<IProduct, Integer> helper = new HelperUtility<>();
 
+    @HystrixCommand
     @RequestMapping(value = "/product", method = RequestMethod.POST)
     public ResponseEntity<Void> saveProduct(Product product) {
         HttpStatus code;
@@ -38,6 +39,7 @@ public class ProductController {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.PUT)
     public ResponseEntity<IProduct> updateProduct(@PathVariable String stringId, Product product) {
         HttpStatus code = HttpStatus.OK;
@@ -63,7 +65,8 @@ public class ProductController {
         }
         return new ResponseEntity<>(product, code);
     }
-
+    
+    @HystrixCommand
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteProductById(@PathVariable String stringId) {
         HttpStatus code;
@@ -81,6 +84,7 @@ public class ProductController {
         return new ResponseEntity<>(code);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public ResponseEntity<List<IProduct>> getProductList() {
         return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);

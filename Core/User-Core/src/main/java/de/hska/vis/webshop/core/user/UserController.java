@@ -49,6 +49,7 @@ public class UserController {
         return new ResponseEntity<>(code);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<IUser>> getUserList() {
         return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);

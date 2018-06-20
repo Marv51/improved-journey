@@ -21,7 +21,7 @@ public class CategoryController {
     private ICategoryDAO dao = DaoFactory.getCategoryDao();
     private HelperUtility<ICategory, Integer> helper = new HelperUtility<>();
 
-
+    @HystrixCommand
     @RequestMapping(value = "/category", method = RequestMethod.POST)
     public ResponseEntity<Void> saveCategory(Category category) {
         HttpStatus code;
@@ -39,6 +39,7 @@ public class CategoryController {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/category/{stringId}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteCategoryById(@PathVariable String stringId) {
         HttpStatus code;
@@ -56,6 +57,7 @@ public class CategoryController {
         return new ResponseEntity<>(code);
     }
 
+    @HystrixCommand
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> getCategoryList() {
         return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);

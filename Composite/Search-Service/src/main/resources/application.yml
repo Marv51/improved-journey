@@ -1,10 +1,10 @@
 server:
-  port: 8088
-  
+  port: 8080
+
 spring:
   application:
     name: search-service
-  
+
 eureka:
   client:
     serviceUrl:

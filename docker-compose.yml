@@ -71,13 +71,9 @@ services:
             - "8084:8080"
         depends_on:
             - "eureka"
-            - "hystrix"
-            - "user"
-            - "category"
-            - "product"
         links:
             - "eureka:eureka"
-            - "hystrix:hystrix"
+            - "user:user"
 
     zuul:
         build: Zuul-Server/.

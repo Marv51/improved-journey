@@ -1,5 +1,7 @@
 package de.hska.vis.webshop.composite.search;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vis.webshop.composite.search.clients.CategoryClient;
 import de.hska.vis.webshop.composite.search.clients.ProductClient;
 import de.hska.vis.webshop.composite.search.clients.UserClient;
@@ -29,22 +31,109 @@ public class SearchController {
     @Autowired
     CategoryClient categoryClient;
 
+    /**
+     * Cache map for {@link IUser}s.
+     * <p>
+     * Could technically be a set but therefore an equals would be necessary.
+     * tl;dr shorter and easier that way.
+     */
+    private Map<Integer, IUser> USER_CACHE = new HashMap<>();
+    /**
+     * Cache map for {@link IProduct}s.
+     * <p>
+     * Could technically be a set but therefore an equals would be necessary.
+     * tl;dr shorter and easier that way.
+     */
     private Map<Integer, IProduct> PRODUCT_CACHE = new HashMap<>();
+    /**
+     * Cache map for {@link ICategory}s.
+     * <p>
+     * Could technically be a set but therefore an equals would be necessary.
+     * tl;dr shorter and easier that way.
+     */
     private Map<Integer, ICategory> CATEGORY_CACHE = new HashMap<>();
+
+    // Getters for whole list
+
+    /**
+     * Getter for the whole list of {@link IUser}s via {@link #userClient}.
+     * <p>
+     * Fills the {@link #USER_CACHE} with the result before returning to caller.
+     *
+     * @return the whole user list.
+     */
+    @HystrixCommand(fallbackMethod = "getUsersCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "1")
+    })
+    private List<IUser> getUsers() {
+        List<IUser> users = userClient.getUserList().getBody();
+        users.forEach(user -> {
+            USER_CACHE.put(user.getId(), user);
+        });
+        return users;
+    }
+
+    private List<IUser> getUsersCache() {
+        return new LinkedList<>(USER_CACHE.values());
+    }
+
+    /**
+     * Getter for the whole list of {@link IProduct}s via {@link #productClient}.
+     * <p>
+     * Fills the {@link #PRODUCT_CACHE} with the result before returning to caller.
+     *
+     * @return the whole product list.
+     */
+    @HystrixCommand(fallbackMethod = "getProductsCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "1")
+    })
+    private List<IProduct> getProducts() {
+        List<IProduct> products = productClient.getProductList().getBody();
+        products.forEach(product -> {
+            PRODUCT_CACHE.put(product.getId(), product);
+        });
+        return products;
+    }
+
+    private List<IProduct> getProductsCache() {
+        return new LinkedList<>(PRODUCT_CACHE.values());
+    }
+
+    /**
+     * Getter for the whole list of {@link ICategory}s via {@link #categoryClient}.
+     * <p>
+     * Fills the {@link #CATEGORY_CACHE} with the result before returning to caller.
+     *
+     * @return the whole category list.
+     */
+    @HystrixCommand(fallbackMethod = "getCategoriesCache", commandProperties = {
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
+    })
+    private List<ICategory> getCategories() {
+        List<ICategory> categories = categoryClient.getCategoryList().getBody();
+        categories.forEach(category -> {
+            CATEGORY_CACHE.put(category.getId(), category);
+        });
+        return categories;
+    }
+
+    private List<ICategory> getCategoriesCache() {
+        return new LinkedList<>(CATEGORY_CACHE.values());
+    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<IUser>> getUserList() {
-        return new ResponseEntity<>(userClient.getUserList().getBody(), HttpStatus.OK);
+        return new ResponseEntity<>(getUsers(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.GET)
     public ResponseEntity<List<IProduct>> getProductList() {
-        return new ResponseEntity<>(productClient.getProductList().getBody(), HttpStatus.OK);
+        return new ResponseEntity<>(getProducts(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> getCategoryList() {
-        return new ResponseEntity<>(categoryClient.getCategoryList().getBody(), HttpStatus.OK);
+        return new ResponseEntity<>(getCategories(), HttpStatus.OK);
     }
 
     /**
@@ -68,15 +157,10 @@ public class SearchController {
     }
 
     private List<IProduct> searchProductByName(String name, Integer min, Integer max) {
-        // don't know exactly if that is needed in an extra line or if we could combine that
-        ResponseEntity<List<IProduct>> productsAnswer = this.getProductList();
-        List<IProduct> products = productsAnswer.getBody();
+        List<IProduct> products = getProducts();
         List<IProduct> result = new LinkedList<>();
 
         products.forEach(c -> {
-            // fill cache
-            PRODUCT_CACHE.put(c.getId(), c);
-
             // name cannot be null or empty, as its required by the request
             // therefore you need to supply '.*' for all names
             if (c.getName().matches(name)) {
@@ -109,13 +193,10 @@ public class SearchController {
      */
     @RequestMapping(value = "/search/category", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> searchCategory(@RequestParam("name") String name) {
-        // don't know exactly if that is needed in an extra line or if we could combine that
-        ResponseEntity<List<ICategory>> categoriesAnswer = categoryClient.getCategoryList();
-        List<ICategory> categories = categoriesAnswer.getBody();
+        List<ICategory> categories = getCategories();
         List<ICategory> result = new LinkedList<>();
 
         categories.forEach(c -> {
-            CATEGORY_CACHE.put(c.getId(), c);
             if (c.getName().matches(name)) {
                 result.add(c);
             }
@@ -143,9 +224,7 @@ public class SearchController {
      */
     @RequestMapping(value = "/search/user", method = RequestMethod.GET)
     public ResponseEntity<List<IUser>> searchUsers(@RequestParam("name") String name) {
-        // don't know exactly if that is needed in an extra line or if we could combine that
-        ResponseEntity<List<IUser>> usersAnswer = userClient.getUserList();
-        List<IUser> users = usersAnswer.getBody();
+        List<IUser> users = getUsers();
         List<IUser> result = new LinkedList<>();
 
         users.forEach(c -> {

@@ -41,6 +41,16 @@ public class User implements IUser, Serializable {
         this.role = role;
     }
 
+    public User(int id, String username, String firstname,
+                String lastname, String password, Role role) {
+        this.id = id;
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.password = password;
+        this.role = role;
+    }
+
     @Override
     public int getId() {
         return id;

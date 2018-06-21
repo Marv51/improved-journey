@@ -30,6 +30,12 @@ public class Role implements IRole, java.io.Serializable {
         this.level = level;
     }
 
+    public Role(int id, String typ, int level) {
+        this.typ = typ;
+        this.level = level;
+        this.id = id;
+    }
+
     @Override
     public int getId() {
         return this.id;

@@ -35,6 +35,12 @@ public class Category implements ICategory, java.io.Serializable {
         this.products = products;
     }
 
+    public Category(int id, String name, Set<Product> products) {
+        this.id = id;
+        this.name = name;
+        this.products = products;
+    }
+
     @Override
     public int getId() {
         return this.id;

@@ -1,7 +1,10 @@
 package de.hska.vis.webshop.core.database.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import de.hska.vis.webshop.core.database.model.deserializer.UserDeserializer;
 import de.hska.vis.webshop.core.database.model.impl.Role;
 
+@JsonDeserialize(using = UserDeserializer.class)
 public interface IUser {
 
     int getId();

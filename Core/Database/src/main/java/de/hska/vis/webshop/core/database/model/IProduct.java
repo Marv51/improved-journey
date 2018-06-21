@@ -1,7 +1,10 @@
 package de.hska.vis.webshop.core.database.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import de.hska.vis.webshop.core.database.model.deserializer.ProductDeserializer;
 import de.hska.vis.webshop.core.database.model.impl.Category;
 
+@JsonDeserialize(using = ProductDeserializer.class)
 public interface IProduct {
     int getId();
 

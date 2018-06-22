@@ -13,6 +13,16 @@ zuul:
       url: http://user:8080
       strip-prefix: false
 
+    category-service:
+      path: /category/**
+      url: http://category:8080
+      strip-prefix: false
+
+    search-service:
+      path: /search/**
+      url: http://search:8080
+      strip-prefix: false
+
 
 eureka:
   client:

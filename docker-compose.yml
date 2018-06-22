@@ -81,6 +81,11 @@ services:
             - "8080:8081"
         depends_on:
             - "eureka"
+            - "user"
+            - "search"
+            - "category"
         links:
             - "eureka:eureka"
             - "user:user"
+            - "search:search"
+            - "category:category"

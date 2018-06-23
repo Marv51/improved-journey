@@ -23,6 +23,11 @@ zuul:
       url: http://search:8080
       strip-prefix: false
 
+    product-service:
+      path: /product/**
+      url: http://product:8080
+      strip-prefix: false
+
 
 eureka:
   client:

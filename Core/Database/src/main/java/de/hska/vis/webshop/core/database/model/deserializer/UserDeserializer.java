@@ -28,13 +28,21 @@ public class UserDeserializer extends JsonDeserializer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
 
-        int id = node.get("id").asInt();
+        // these are all non-nullable therefore have to be there if correctly sent
         String username = node.get("username").asText();
         String firstname = node.get("firstname").asText();
         String lastname = node.get("lastname").asText();
         String password = node.get("password").asText();
         Role role = mapper.readValue(node.get("role").toString(), Role.class);
 
+        JsonNode idNode = node.get("id");
+        if (idNode == null) {
+            // new unsaved user
+            return new User(username, firstname, lastname, password, role);
+        }
+
+        // known users
+        int id = idNode.asInt();
         return new User(id, username, firstname, lastname, password, role);
     }
 }

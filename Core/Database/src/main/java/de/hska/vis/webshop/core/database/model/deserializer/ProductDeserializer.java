@@ -28,11 +28,18 @@ public class ProductDeserializer extends JsonDeserializer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
 
-        int id = node.get("id").asInt();
         String name = node.get("name").asText();
         double price = node.get("price").asDouble();
         Category category = mapper.readValue(node.get("category").toString(), Category.class);
         String details = node.get("details").asText();
+
+        JsonNode idNode = node.get("id");
+        if (idNode == null) {
+            // new unsaved product
+            return new Product(name, price, category, details);
+        }
+        // already known product
+        int id = idNode.asInt();
 
         return new Product(id, name, price, category, details);
     }

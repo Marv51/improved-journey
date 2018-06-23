@@ -24,9 +24,17 @@ public class RoleDeserializer extends JsonDeserializer {
 
         // obviously the json serializer doesn't take the column names but the variable names
         // who would have thought of that?
-        int id = node.get("id").asInt();
         String typ = node.get("typ").asText();
         int level = node.get("level").asInt();
+
+        JsonNode idNode = node.get("id");
+        if (idNode == null) {
+            // new unsaved role
+            return new Role(typ, level);
+        }
+        // known role
+        int id = idNode.asInt();
+
 
         return new Role(id, typ, level);
     }

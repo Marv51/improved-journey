@@ -1,6 +1,7 @@
 package de.hska.vis.webshop.core.database.model.impl;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.hska.vis.webshop.core.database.model.IProduct;
 
 import javax.persistence.*;
@@ -23,6 +24,7 @@ public class Product implements IProduct, java.io.Serializable {
     @Column(name = "price")
     private double price;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;

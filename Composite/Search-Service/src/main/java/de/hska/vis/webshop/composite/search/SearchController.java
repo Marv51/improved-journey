@@ -126,12 +126,12 @@ public class SearchController {
         return new ResponseEntity<>(getUsers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/search/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/products", method = RequestMethod.GET)
     public ResponseEntity<List<IProduct>> getProductList() {
         return new ResponseEntity<>(getProducts(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/search/category", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/categories", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> getCategoryList() {
         return new ResponseEntity<>(getCategories(), HttpStatus.OK);
     }

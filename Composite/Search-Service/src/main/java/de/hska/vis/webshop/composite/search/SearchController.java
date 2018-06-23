@@ -121,17 +121,17 @@ public class SearchController {
         return new LinkedList<>(CATEGORY_CACHE.values());
     }
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/users", method = RequestMethod.GET)
     public ResponseEntity<List<IUser>> getUserList() {
         return new ResponseEntity<>(getUsers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/product", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/product", method = RequestMethod.GET)
     public ResponseEntity<List<IProduct>> getProductList() {
         return new ResponseEntity<>(getProducts(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/category", method = RequestMethod.GET)
+    @RequestMapping(value = "/search/category", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> getCategoryList() {
         return new ResponseEntity<>(getCategories(), HttpStatus.OK);
     }

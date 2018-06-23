@@ -26,7 +26,7 @@ public class User implements IUser, Serializable {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role", nullable = false)
     private Role role;
 

@@ -21,7 +21,9 @@ public class Category implements ICategory, java.io.Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    @OneToMany(cascade = CascadeType.ALL,
+               mappedBy = "category",
+               fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>(0);
 
     public Category() {}

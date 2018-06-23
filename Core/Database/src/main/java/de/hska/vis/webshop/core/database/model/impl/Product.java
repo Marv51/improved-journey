@@ -23,7 +23,7 @@ public class Product implements IProduct, java.io.Serializable {
     @Column(name = "price")
     private double price;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
 

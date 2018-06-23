@@ -8,7 +8,7 @@ import de.hska.vis.webshop.core.database.dao.impl.UserDAO;
 public class DaoFactory {
     private DaoFactory() {}
 
-    public static CategoryDAO getCategoryDao() {
+    public static ICategoryDAO getCategoryDao() {
         return new CategoryDAO();
     }
 

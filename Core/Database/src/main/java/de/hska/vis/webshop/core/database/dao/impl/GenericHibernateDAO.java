@@ -8,8 +8,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -140,21 +138,21 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<E> getObjectList() {
         Session session = getCurrentSession();
 
-        //try {
+        try {
             session.beginTransaction();
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<E> criteria = builder.createQuery(entityClass);
-            criteria.from(entityClass);
-            List<E> resultList = session.createQuery(criteria).getResultList();
+
+            Criteria crit = session.createCriteria(entityClass);
+            List<E> resultList = crit.list();
             session.getTransaction().commit();
             return resultList;
-        //} catch (HibernateException e) {
-        //    session.getTransaction().rollback();
-        //    return null;
-        //}
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return null;
+        }
     }
 
     @Override
@@ -199,6 +197,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     public Session getCurrentSession() {
-        return HibernateUtil.getSessionFactory().openSession();
+        return HibernateUtil.getSessionFactory().getCurrentSession();
     }
 }

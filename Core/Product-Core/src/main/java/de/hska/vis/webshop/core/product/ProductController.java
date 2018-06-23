@@ -8,10 +8,7 @@ import de.hska.vis.webshop.core.database.model.impl.Product;
 import de.hska.vis.webshop.core.util.HelperUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class ProductController {
 
     @HystrixCommand
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ResponseEntity<Void> saveProduct(Product product) {
+    public ResponseEntity<Void> saveProduct(@RequestBody Product product) {
         HttpStatus code;
         if (dao.saveObject(product)) {
             code = HttpStatus.OK;
@@ -65,7 +62,7 @@ public class ProductController {
         }
         return new ResponseEntity<>(product, code);
     }
-    
+
     @HystrixCommand
     @RequestMapping(value = "/product/{stringId}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> deleteProductById(@PathVariable String stringId) {

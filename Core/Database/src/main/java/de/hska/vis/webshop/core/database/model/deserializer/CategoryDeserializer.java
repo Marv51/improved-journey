@@ -28,8 +28,19 @@ public class CategoryDeserializer extends JsonDeserializer {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, true);
 
-        int id = node.get("id").asInt();
+        // name always has to be there
         String name = node.get("name").asText();
+
+        // id could be null if it's a new unsaved object
+        JsonNode idNode = node.get("id");
+        if (idNode == null) {
+            // new unsaved object
+            // therefore also no products are saved with it
+            return new Category(name);
+        }
+
+        // known category object, with id and possible saved products
+        int id = idNode.asInt();
         Product[] asArray = mapper.readValue(node.get("products").toString(), Product[].class);
 
 

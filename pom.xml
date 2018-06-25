@@ -18,6 +18,7 @@
         <module>Hystrix-Server</module>
         <module>Turbine</module>
         <module>Zuul-Server</module>
+        <module>FrontEnd</module>
     </modules>
 
     <parent>

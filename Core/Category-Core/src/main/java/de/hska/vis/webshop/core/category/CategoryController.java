@@ -41,18 +41,23 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategoryById(@PathVariable String stringId) {
         HttpStatus code;
         try {
-            ICategory category = getCategoryById(stringId).getBody();
-            if (!category.getProducts().isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
-            }
-            int parsedId = Integer.parseInt(stringId);
-            // get all products for this category
-            ICategory entity = new Category();
-            entity.setId(parsedId);
-            if (dao.deleteObject(entity)) {
-                code = HttpStatus.OK;
-            } else {
+            ResponseEntity<ICategory> response = getCategoryById(stringId);
+            if (response.getStatusCode() != HttpStatus.OK) {
                 code = HttpStatus.NOT_FOUND;
+            } else {
+                ICategory category = response.getBody();
+                if (!category.getProducts().isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+                }
+                int parsedId = Integer.parseInt(stringId);
+                // get all products for this category
+                ICategory entity = new Category();
+                entity.setId(parsedId);
+                if (dao.deleteObject(entity)) {
+                    code = HttpStatus.OK;
+                } else {
+                    code = HttpStatus.NOT_FOUND;
+                }
             }
         } catch (NumberFormatException ex) {
             // invalid number supplied; returning null and HTTP/400

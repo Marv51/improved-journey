@@ -146,7 +146,7 @@ public class SearchController {
     public ResponseEntity<List<IProduct>> searchProduct(@RequestParam(value = "name") String name,
                                                         @RequestParam(value = "minPrice", required = false) Integer minPrice,
                                                         @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
-        return new ResponseEntity<>(searchProductByName(name, minPrice, maxPrice), HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>(searchProductByName(name, minPrice, maxPrice), HttpStatus.OK);
     }
 
     private List<IProduct> searchProductByName(String name, Integer min, Integer max) {
@@ -196,7 +196,7 @@ public class SearchController {
                 result.add(c);
             }
         });
-        return new ResponseEntity<>(result, HttpStatus.I_AM_A_TEAPOT);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

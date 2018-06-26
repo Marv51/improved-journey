@@ -17,7 +17,7 @@ public class User implements IUser, Serializable {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
-    @Column(name = "fistname", nullable = false)
+    @Column(name = "firstname", nullable = false)
     private String firstname;
 
     @Column(name = "lastname", nullable = false)

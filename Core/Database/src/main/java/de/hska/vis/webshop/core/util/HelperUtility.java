@@ -8,13 +8,36 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.function.Function;
 
-public class HelperUtility<T, P extends Serializable> {
-    public ResponseEntity<T> getResponse(String stringId, IGenericDAO<T, P> dao, Function<String, P> castStringTo) {
+/**
+ * HelperUtility can be used to ask a DAO for an instance of Element with the primary key PrimaryKey.
+ *
+ * @param <Element>    different Entities. In our case {@link de.hska.vis.webshop.core.database.model.ICategory},
+ *                     {@link de.hska.vis.webshop.core.database.model.IUser} and
+ *                     {@link de.hska.vis.webshop.core.database.model.IProduct}
+ * @param <PrimaryKey> the primary key for the Element. In our case usually an {@link Integer}
+ */
+public class HelperUtility<Element, PrimaryKey extends Serializable> {
+    /**
+     * Helper method to create a {@link ResponseEntity} containing an Element and a {@link HttpStatus}.
+     * <p>
+     * The status could possibly be:
+     * * 200 / OK
+     * * 404 / Not Found
+     * * 400 / Bad Request
+     * The 400 if the conversion of the PrimaryKey via the #castStringTo function fails.
+     *
+     * @param stringId     the primary key in a string representation
+     * @param dao          the dao which should be asked for the element
+     * @param castStringTo a function which transforms a {@link String} to the PrimaryKey
+     * @return the {@link ResponseEntity} with the resulting object or null and the according
+     * {@link HttpStatus} code.
+     */
+    public ResponseEntity<Element> getResponse(String stringId, IGenericDAO<Element, PrimaryKey> dao, Function<String, PrimaryKey> castStringTo) {
         HttpStatus code = HttpStatus.OK;
-        T responseObject = null;
+        Element responseObject = null;
         try {
-            P parsedId = castStringTo.apply(stringId);
-            List<T> result = dao.get(parsedId);
+            PrimaryKey parsedId = castStringTo.apply(stringId);
+            List<Element> result = dao.get(parsedId);
             if (result == null || result.isEmpty() || result.get(0) == null) {
                 code = HttpStatus.NOT_FOUND;
             } else {

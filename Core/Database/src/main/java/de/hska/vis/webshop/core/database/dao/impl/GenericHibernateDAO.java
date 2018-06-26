@@ -121,12 +121,12 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<E> get(E entity) {
+    public List<E> get(PK primaryKey) {
         Session session = getCurrentSession();
         try {
             session.beginTransaction();
             Criteria crit = session.createCriteria(entityClass);
-            crit.add(Restrictions.idEq(entity));
+            crit.add(Restrictions.idEq(primaryKey));
             List<E> resultList = crit.list();
             session.getTransaction().commit();
             return resultList;

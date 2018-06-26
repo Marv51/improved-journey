@@ -5,21 +5,23 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.function.Function;
 
 public class HelperUtility<T, P extends Serializable> {
     public ResponseEntity<T> getResponse(String stringId, IGenericDAO<T, P> dao, Function<String, P> castStringTo) {
         HttpStatus code = HttpStatus.OK;
-        T responseObject;
+        T responseObject = null;
         try {
             P parsedId = castStringTo.apply(stringId);
-            responseObject = dao.getObjectById(parsedId);
-            if (responseObject == null) {
+            List<T> result = dao.get(parsedId);
+            if (result == null || result.isEmpty() || result.get(0) == null) {
                 code = HttpStatus.NOT_FOUND;
+            } else {
+                responseObject = result.get(0);
             }
         } catch (NumberFormatException ex) {
             // invalid number supplied; returning null and HTTP/400
-            responseObject = null;
             code = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(responseObject, code);

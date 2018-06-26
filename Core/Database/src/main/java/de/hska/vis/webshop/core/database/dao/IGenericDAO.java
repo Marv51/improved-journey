@@ -48,10 +48,10 @@ public interface IGenericDAO<E, PK extends Serializable> {
      * Get all instances that match the properties that are set in the given
      * object using a standard Query by Example method.
      *
-     * @param entity the example entity
+     * @param primaryKey the example entity
      * @return a list of entities that match the example.
      */
-    List<E> get(E entity);
+    List<E> get(PK primaryKey);
 
     /**
      * Get all instances of this entity that have been persisted.

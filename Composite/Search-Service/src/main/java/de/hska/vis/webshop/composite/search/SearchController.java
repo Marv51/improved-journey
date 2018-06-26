@@ -25,6 +25,7 @@ import java.util.Map;
 @RestController
 public class SearchController {
 
+    public static final String ALL_CHARS_REGEX = ".*";
     @Autowired
     public UserClient userClient;
     @Autowired
@@ -152,10 +153,11 @@ public class SearchController {
         List<IProduct> products = getProducts();
         List<IProduct> result = new LinkedList<>();
 
+        String regex = ALL_CHARS_REGEX + name + ALL_CHARS_REGEX;
         products.forEach(c -> {
             // name cannot be null or empty, as its required by the request
             // therefore you need to supply '.*' for all names
-            if (c.getName().matches(name)) {
+            if (c.getName().matches(regex)) {
                 if (min == null && max == null
                         || min != null && max != null && isBetween((int) c.getPrice(), min, max)
                         || min != null && (int) c.getPrice() > min
@@ -188,8 +190,9 @@ public class SearchController {
         List<ICategory> categories = getCategories();
         List<ICategory> result = new LinkedList<>();
 
+        String regex = ALL_CHARS_REGEX + name + ALL_CHARS_REGEX;
         categories.forEach(c -> {
-            if (c.getName().matches(name)) {
+            if (c.getName().matches(regex)) {
                 result.add(c);
             }
         });
@@ -219,8 +222,9 @@ public class SearchController {
         List<IUser> users = getUsers();
         List<IUser> result = new LinkedList<>();
 
+        String regex = ALL_CHARS_REGEX + name + ALL_CHARS_REGEX;
         users.forEach(c -> {
-            if (c.getUsername().matches(name)) {
+            if (c.getUsername().matches(regex)) {
                 result.add(c);
             }
         });

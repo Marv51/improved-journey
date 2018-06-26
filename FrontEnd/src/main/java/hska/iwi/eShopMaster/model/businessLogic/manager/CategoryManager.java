@@ -1,20 +1,21 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager;
 
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
+import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.impl.Category;
 
 import java.util.List;
 
 public interface CategoryManager {
 
-	public List<Category> getCategories();
+	public List<ICategory> getCategories();
 	
-	public Category getCategory(int id);
+	//public ICategory getCategory(int id);
 	
-	public Category getCategoryByName(String name);
+	//public ICategory getCategoryByName(String name);
 	
 	public void addCategory(String name);
 	
-	public void delCategory(Category cat);
+	//public void delCategory(Category cat);
 	
 	public void delCategoryById(int id);
 

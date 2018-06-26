@@ -1,9 +1,10 @@
 package hska.iwi.eShopMaster.controller;
 
+import de.hska.vis.webshop.core.database.model.IProduct;
+import de.hska.vis.webshop.core.database.model.impl.Product;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class ProductDetailsAction extends ActionSupport {
 	private String searchValue;
 	private Integer searchMinPrice;
 	private Integer searchMaxPrice;
-	private Product product;
+	private IProduct product;
 
 	/**
 	 * 
@@ -81,7 +82,7 @@ public class ProductDetailsAction extends ActionSupport {
 		this.searchMaxPrice = searchMaxPrice;
 	}
 
-	public Product getProduct() {
+	public IProduct getProduct() {
 		return product;
 	}
 

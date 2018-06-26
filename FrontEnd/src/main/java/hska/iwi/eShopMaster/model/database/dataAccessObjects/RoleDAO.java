@@ -2,8 +2,8 @@ package hska.iwi.eShopMaster.model.database.dataAccessObjects;
 
 import java.util.List;
 
+import de.hska.vis.webshop.core.database.model.impl.Role;
 import hska.iwi.eShopMaster.model.database.GenericHibernateDAO;
-import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 
 public class RoleDAO extends GenericHibernateDAO<Role, Integer> {
 	

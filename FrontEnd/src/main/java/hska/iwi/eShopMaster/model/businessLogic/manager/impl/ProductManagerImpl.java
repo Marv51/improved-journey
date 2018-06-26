@@ -1,49 +1,56 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
+import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.IProduct;
+import de.hska.vis.webshop.core.database.model.impl.Category;
+import de.hska.vis.webshop.core.database.model.impl.Product;
+import feign.Feign;
+import feign.jackson.JacksonDecoder;
+import hska.iwi.eShopMaster.clients.ProductClient;
+import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
-import hska.iwi.eShopMaster.model.database.dataAccessObjects.ProductDAO;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
+import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
 public class ProductManagerImpl implements ProductManager {
-	private ProductDAO helper;
+	private ProductClient helper;
 	
 	public ProductManagerImpl() {
-		helper = new ProductDAO();
+		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+				.target(ProductClient.class, "http://localhost:8080");
 	}
 
-	public List<Product> getProducts() {
-		return helper.getObjectList();
+	public List<IProduct> getProducts() {
+		return helper.getProductList().getBody();
 	}
 	
-	public List<Product> getProductsForSearchValues(String searchDescription,
-			Double searchMinPrice, Double searchMaxPrice) {	
-		return new ProductDAO().getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
+	public List<IProduct> getProductsForSearchValues(String searchDescription,
+			Double searchMinPrice, Double searchMaxPrice) {
+		throw new NotImplementedException();
+		//return helper.getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
 	}
 
-	public Product getProductById(int id) {
-		return helper.getObjectById(id);
+	public IProduct getProductById(int id) {
+		return helper.getProductById(id).getBody();
 	}
 
-	public Product getProductByName(String name) {
-		return helper.getObjectByName(name);
-	}
 	
 	public int addProduct(String name, double price, int categoryId, String details) {
-		int productId = -1;
+		throw new NotImplementedException();
+		/*int productId = -1;
 		
 		CategoryManager categoryManager = new CategoryManagerImpl();
-		Category category = categoryManager.getCategory(categoryId);
+		ICategory category = categoryManager.getCategory(categoryId);
 		
 		if(category != null){
-			Product product;
+			IProduct product;
 			if(details == null){
-				product = new Product(name, price, category);	
+				product = new Product(name, price, (Category)category);
 			} else{
-				product = new Product(name, price, category, details);
+				product = new Product(name, price, (Category)category, details);
 			}
 			
 			helper.saveObject(product);
@@ -51,16 +58,13 @@ public class ProductManagerImpl implements ProductManager {
 		}
 			 
 		return productId;
+		*/
 	}
 	
 
 	public void deleteProductById(int id) {
-		helper.deleteById(id);
-	}
-
-	public boolean deleteProductsByCategoryId(int categoryId) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new NotImplementedException();
+		//helper.deleteById(id);
 	}
 
 }

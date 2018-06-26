@@ -1,13 +1,14 @@
 package hska.iwi.eShopMaster.controller;
 
+import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.IProduct;
+import de.hska.vis.webshop.core.database.model.impl.Category;
+import de.hska.vis.webshop.core.database.model.impl.Product;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.Product;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,8 +32,8 @@ public class SearchAction extends ActionSupport{
 	private Double sMaxPrice = null;
 	
 	private User user;
-	private List<Product> products;
-	private List<Category> categories;
+	private List<IProduct> products;
+	private List<ICategory> categories;
 	
 
 	public String execute() throws Exception {
@@ -74,19 +75,19 @@ public class SearchAction extends ActionSupport{
 			this.user = user;
 		}
 		
-		public List<Product> getProducts() {
+		public List<IProduct> getProducts() {
 			return products;
 		}
 
-		public void setProducts(List<Product> products) {
+		public void setProducts(List<IProduct> products) {
 			this.products = products;
 		}
 		
-		public List<Category> getCategories() {
+		public List<ICategory> getCategories() {
 			return categories;
 		}
 
-		public void setCategories(List<Category> categories) {
+		public void setCategories(List<ICategory> categories) {
 			this.categories = categories;
 		}
 		

@@ -1,15 +1,17 @@
 package hska.iwi.eShopMaster.controller;
 
 import de.hska.vis.webshop.core.database.model.IUser;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import feign.Feign;
 import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -18,6 +20,8 @@ import com.opensymphony.xwork2.ActionSupport;
 import feign.jackson.JacksonDecoder;
 
 public class LoginAction extends ActionSupport {
+
+	final static Logger logger = LoggerFactory.getLogger(LoginAction.class);
 
 	/**
      *
@@ -29,27 +33,16 @@ public class LoginAction extends ActionSupport {
 	private String lastname;
 	private String role;
 
-	private UserClient userClient;
-
 	@Override
 	public String execute() throws Exception {
 
 		// Return string:
 		String result = "input";
 
-		userClient = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(UserClient.class, "http://localhost:8083");
-
-		List<IUser> users = userClient.getUserList().getBody();
-		users.forEach(user -> {
-					System.out.println(user.getUsername());
-				});
-
 		UserManager myCManager = new UserManagerImpl();
 		
 		// Get user from DB:
-		User user = myCManager.getUserByUsername(getUsername());
-
+		IUser user = myCManager.getUserByUsername(getUsername());
 		// Does user exist?
 		if (user != null) {
 			// Is the password correct?
@@ -67,12 +60,14 @@ public class LoginAction extends ActionSupport {
 			}
 			else {
 				addActionError(getText("error.password.wrong"));
+				logger.error("PASSWORD IS WRONG");
 			}
 		}
 		else {
 			addActionError(getText("error.username.wrong"));
+			logger.error("ERROR USERNAME WRONG");
 		}
-
+		logger.error("LOGGED IN SUCCESSFULLY");
 		return result;
 	}
 	

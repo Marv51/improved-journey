@@ -1,8 +1,8 @@
 package hska.iwi.eShopMaster.controller;
 
+import de.hska.vis.webshop.core.database.model.impl.Role;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Role;
 
 import java.util.Map;
 

@@ -1,10 +1,10 @@
 package hska.iwi.eShopMaster.controller;
 
+import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.impl.Category;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +20,7 @@ public class AddCategoryAction extends ActionSupport {
 	
 	private String newCatName = null;
 	
-	private List<Category> categories;
+	private List<ICategory> categories;
 	
 	User user;
 
@@ -55,11 +55,11 @@ public class AddCategoryAction extends ActionSupport {
 		this.setCategories(categoryManager.getCategories());
 	}
 
-	public List<Category> getCategories() {
+	public List<ICategory> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(List<ICategory> categories) {
 		this.categories = categories;
 	}
 	

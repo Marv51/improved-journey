@@ -1,9 +1,10 @@
 package hska.iwi.eShopMaster.controller;
 
+import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.impl.Category;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
-import hska.iwi.eShopMaster.model.database.dataobjects.Category;
-import hska.iwi.eShopMaster.model.database.dataobjects.User;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class DeleteCategoryAction extends ActionSupport {
 	private static final long serialVersionUID = 1254575994729199914L;
 	
 	private int catId;
-	private List<Category> categories;
+	private List<ICategory> categories;
 
 	public String execute() throws Exception {
 		
@@ -53,11 +54,11 @@ public class DeleteCategoryAction extends ActionSupport {
 		this.catId = catId;
 	}
 
-	public List<Category> getCategories() {
+	public List<ICategory> getCategories() {
 		return categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(List<ICategory> categories) {
 		this.categories = categories;
 	}
 }

@@ -2,7 +2,6 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 
 import de.hska.vis.webshop.core.database.model.ICategory;
-import de.hska.vis.webshop.core.database.model.impl.Category;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.CategoryClient;
@@ -23,7 +22,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	public List<ICategory> getCategories() {
 		return helper.getCategoryList().getBody();
 	}
-	
+
 
 	public void addCategory(String name) {
 		throw new NotImplementedException();

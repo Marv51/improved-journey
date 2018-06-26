@@ -1,14 +1,9 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
-import de.hska.vis.webshop.core.database.model.ICategory;
 import de.hska.vis.webshop.core.database.model.IProduct;
-import de.hska.vis.webshop.core.database.model.impl.Category;
-import de.hska.vis.webshop.core.database.model.impl.Product;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.ProductClient;
-import hska.iwi.eShopMaster.clients.UserClient;
-import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

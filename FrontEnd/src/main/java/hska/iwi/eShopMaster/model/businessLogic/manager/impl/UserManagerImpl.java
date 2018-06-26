@@ -6,7 +6,6 @@ import de.hska.vis.webshop.core.database.model.impl.User;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.UserClient;
-import hska.iwi.eShopMaster.controller.LoginAction;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

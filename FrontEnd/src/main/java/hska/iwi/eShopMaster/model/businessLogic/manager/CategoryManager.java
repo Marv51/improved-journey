@@ -1,7 +1,6 @@
 package hska.iwi.eShopMaster.model.businessLogic.manager;
 
 import de.hska.vis.webshop.core.database.model.ICategory;
-import de.hska.vis.webshop.core.database.model.impl.Category;
 
 import java.util.List;
 

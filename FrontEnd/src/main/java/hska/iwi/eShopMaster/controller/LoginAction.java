@@ -1,9 +1,6 @@
 package hska.iwi.eShopMaster.controller;
 
 import de.hska.vis.webshop.core.database.model.IUser;
-import de.hska.vis.webshop.core.database.model.impl.User;
-import feign.Feign;
-import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
 
@@ -12,16 +9,13 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-import feign.jackson.JacksonDecoder;
-
 public class LoginAction extends ActionSupport {
 
-	final static Logger logger = LoggerFactory.getLogger(LoginAction.class);
+	private final static Logger logger = LoggerFactory.getLogger(LoginAction.class);
 
 	/**
      *
@@ -73,10 +67,10 @@ public class LoginAction extends ActionSupport {
 	
 	@Override
 	public void validate() {
-		if (getUsername().length() == 0) {
+		if (getUsername() == null || getUsername().length() == 0) {
 			addActionError(getText("error.username.required"));
 		}
-		if (getPassword().length() == 0) {
+		if (getPassword() == null || getPassword().length() == 0) {
 			addActionError(getText("error.password.required"));
 		}
 	}

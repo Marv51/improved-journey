@@ -1,10 +1,11 @@
 package de.hska.vis.webshop.composite.search;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import de.hska.vis.webshop.composite.search.clients.CategoryClient;
 import de.hska.vis.webshop.composite.search.clients.ProductClient;
 import de.hska.vis.webshop.composite.search.clients.UserClient;
+import de.hska.vis.webshop.composite.search.commands.GetCategoryCommand;
+import de.hska.vis.webshop.composite.search.commands.GetProductsCommand;
+import de.hska.vis.webshop.composite.search.commands.GetUserCommand;
 import de.hska.vis.webshop.core.database.model.ICategory;
 import de.hska.vis.webshop.core.database.model.IProduct;
 import de.hska.vis.webshop.core.database.model.IUser;
@@ -25,11 +26,11 @@ import java.util.Map;
 public class SearchController {
 
     @Autowired
-    UserClient userClient;
+    public UserClient userClient;
     @Autowired
-    ProductClient productClient;
+    public ProductClient productClient;
     @Autowired
-    CategoryClient categoryClient;
+    public CategoryClient categoryClient;
 
     /**
      * Cache map for {@link IUser}s.
@@ -55,6 +56,18 @@ public class SearchController {
 
     // Getters for whole list
 
+    public void addToUserCache(IUser user) {
+        USER_CACHE.put(user.getId(), user);
+    }
+
+    public void addToProductCache(IProduct product) {
+        PRODUCT_CACHE.put(product.getId(), product);
+    }
+
+    public void addToCategoryCache(ICategory category) {
+        CATEGORY_CACHE.put(category.getId(), category);
+    }
+
     /**
      * Getter for the whole list of {@link IUser}s via {@link #userClient}.
      * <p>
@@ -62,18 +75,11 @@ public class SearchController {
      *
      * @return the whole user list.
      */
-    @HystrixCommand(fallbackMethod = "getUsersCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "1")
-    })
     private List<IUser> getUsers() {
-        List<IUser> users = userClient.getUserList().getBody();
-        users.forEach(user -> {
-            USER_CACHE.put(user.getId(), user);
-        });
-        return users;
+        return new GetUserCommand(this).execute();
     }
 
-    private List<IUser> getUsersCache() {
+    public List<IUser> getUsersCache() {
         return new LinkedList<>(USER_CACHE.values());
     }
 
@@ -84,18 +90,11 @@ public class SearchController {
      *
      * @return the whole product list.
      */
-    @HystrixCommand(fallbackMethod = "getProductsCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "1")
-    })
     private List<IProduct> getProducts() {
-        List<IProduct> products = productClient.getProductList().getBody();
-        products.forEach(product -> {
-            PRODUCT_CACHE.put(product.getId(), product);
-        });
-        return products;
+        return new GetProductsCommand(this).execute();
     }
 
-    private List<IProduct> getProductsCache() {
+    public List<IProduct> getProductsCache() {
         return new LinkedList<>(PRODUCT_CACHE.values());
     }
 
@@ -106,18 +105,11 @@ public class SearchController {
      *
      * @return the whole category list.
      */
-    @HystrixCommand(fallbackMethod = "getCategoriesCache", commandProperties = {
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "2")
-    })
     private List<ICategory> getCategories() {
-        List<ICategory> categories = categoryClient.getCategoryList().getBody();
-        categories.forEach(category -> {
-            CATEGORY_CACHE.put(category.getId(), category);
-        });
-        return categories;
+        return new GetCategoryCommand(this).execute();
     }
 
-    private List<ICategory> getCategoriesCache() {
+    public List<ICategory> getCategoriesCache() {
         return new LinkedList<>(CATEGORY_CACHE.values());
     }
 

@@ -10,8 +10,12 @@ import hska.iwi.eShopMaster.model.database.dataobjects.User;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
+
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
+import feign.jackson.JacksonDecoder;
 
 public class LoginAction extends ActionSupport {
 
@@ -33,7 +37,7 @@ public class LoginAction extends ActionSupport {
 		// Return string:
 		String result = "input";
 
-		userClient = Feign.builder()
+		userClient = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
 				.target(UserClient.class, "http://localhost:8083");
 
 		List<IUser> users = userClient.getUserList().getBody();

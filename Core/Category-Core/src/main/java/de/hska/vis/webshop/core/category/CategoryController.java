@@ -41,8 +41,15 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategoryById(@PathVariable String stringId) {
         HttpStatus code;
         try {
-            Integer parsedId = Integer.parseInt(stringId);
-            if (dao.deleteById(parsedId)) {
+            ICategory category = getCategoryById(stringId).getBody();
+            if (!category.getProducts().isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+            }
+            int parsedId = Integer.parseInt(stringId);
+            // get all products for this category
+            ICategory entity = new Category();
+            entity.setId(parsedId);
+            if (dao.deleteObject(entity)) {
                 code = HttpStatus.OK;
             } else {
                 code = HttpStatus.NOT_FOUND;

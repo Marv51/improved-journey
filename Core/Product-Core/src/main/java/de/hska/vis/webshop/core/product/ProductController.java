@@ -68,8 +68,10 @@ public class ProductController {
     public ResponseEntity<Void> deleteProductById(@PathVariable String stringId) {
         HttpStatus code;
         try {
-            Integer parsedId = Integer.parseInt(stringId);
-            if (dao.deleteById(parsedId)) {
+            int parsedId = Integer.parseInt(stringId);
+            IProduct entity = new Product();
+            entity.setId(parsedId);
+            if (dao.deleteObject(entity)) {
                 code = HttpStatus.OK;
             } else {
                 code = HttpStatus.NOT_FOUND;

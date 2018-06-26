@@ -52,6 +52,10 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
         } catch (HibernateException e) {
             session.getTransaction().rollback();
             return false;
+        } finally {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
         }
     }
 
@@ -60,10 +64,19 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
     public E getObjectById(PK id) {
         Session session = getCurrentSession();
 
-        session.beginTransaction();
-        E entity = session.get(entityClass, id);
-        session.getTransaction().commit();
-        return entity;
+        try {
+            session.beginTransaction();
+            E entity = session.get(entityClass, id);
+            session.getTransaction().commit();
+            return entity;
+        } catch (HibernateException e) {
+            session.getTransaction().rollback();
+            return null;
+        } finally {
+            if (session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+        }
     }
 
     @Override
@@ -113,7 +126,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
             session.getTransaction().commit();
             return true;
         } catch (HibernateException e) {
-            //log.error("Hibernate Exception" + e.getMessage());
             session.getTransaction().rollback();
             return false;
         }
@@ -131,7 +143,6 @@ public class GenericHibernateDAO<E, PK extends Serializable> implements IGeneric
             session.getTransaction().commit();
             return resultList;
         } catch (HibernateException e) {
-            //log.error("Hibernate Exception" + e.getMessage());
             session.getTransaction().rollback();
             return null;
         }

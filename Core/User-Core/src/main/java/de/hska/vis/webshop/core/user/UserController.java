@@ -38,7 +38,7 @@ public class UserController {
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
     public ResponseEntity<Void> updateUser(@RequestBody User user) {
         HttpStatus code;
-        if (dao.saveObject(user)) {
+        if (dao.updateObject(user)) {
             code = HttpStatus.OK;
         } else {
             code = HttpStatus.BAD_REQUEST;

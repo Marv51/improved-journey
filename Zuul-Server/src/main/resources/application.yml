@@ -9,33 +9,48 @@ zuul:
   routes:
     user-service:
       path: /users/**
-#      serviceId: user-service
-      url: http://user:8080
+      serviceId: USER-SERVICE
       strip-prefix: false
 
     category-service:
       path: /category/**
-      url: http://category:8080
+      serviceId: CATEGORY-SERVICE
       strip-prefix: false
 
     search-service:
       path: /search/**
-      url: http://search:8080
+      serviceId: SEARCH-SERVICE
       strip-prefix: false
 
     product-service:
       path: /product/**
-      url: http://product:8080
+      serviceId: PRODUCT-SERVICE
       strip-prefix: false
 
 
 eureka:
+  instance:
+    preferIpAdress: true
   client:
+    registerWithEureka: true
+    fetchRegistry: true
     serviceUrl:
       defaultZone: http://eureka:8761/eureka/
-    registerWithEureka: false
+
 
 
 ribbon:
+  readTimeout: 30000
   eureka:
     enabled: true
+    
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 30000

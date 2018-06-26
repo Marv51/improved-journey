@@ -16,16 +16,6 @@ services:
         ports:
             - "8761:8761"
 
-    hystrix:
-        build: Hystrix-Server/.
-        ports:
-            - "9000:9000"
-        links:
-            - "eureka:eureka"
-            - "user:user"
-            - "category:category"
-            - "turbine:turbine"
-
     turbine:
         build: Turbine/.
         ports:
@@ -34,6 +24,8 @@ services:
             - "eureka:eureka"
             - "user:user"
             - "category:category"
+            - "search:search"
+            - "zuul:zuul"
 
     user:
         build: Core/User-Core/.

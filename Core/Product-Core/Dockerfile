@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM openjdk:8-jre-alpine3.7
 MAINTAINER Magenta Swamp Blaster
 
 ADD ./target/core.product-1.0-SNAPSHOT.jar /home/

@@ -36,7 +36,7 @@ public class UserController {
 
     @HystrixCommand
     @RequestMapping(value = "/users", method = RequestMethod.PUT)
-    public ResponseEntity<Void> registerUser(@RequestBody User user) {
+    public ResponseEntity<Void> updateUser(@RequestBody User user) {
         HttpStatus code;
         if (dao.saveObject(user)) {
             code = HttpStatus.OK;

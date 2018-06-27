@@ -14,58 +14,57 @@ import org.springframework.http.ResponseEntity;
 
 
 public class UserManagerImpl implements UserManager {
-	UserClient helper;
+    UserClient helper;
 
-	private final static Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
-	
-	public UserManagerImpl() {
-		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(UserClient.class, "http://host.docker.internal:8080");
-	}
+    private final static Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
 
-	
-	public void registerUser(String username, String name, String lastname, String password, Role role) {
-		throw new UnsupportedOperationException();
-		//User user = new User(username, name, lastname, password, role);
-		//helper.saveObject(user);
-	}
+    public UserManagerImpl() {
+        helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+                .target(UserClient.class, "http://zuul:8081");
+    }
 
-	
-	public IUser getUserByUsername(String username) {
-		if (username == null || username.equals("")) {
-			return null;
-		}
+
+    public void registerUser(String username, String name, String lastname, String password, Role role) {
+        throw new UnsupportedOperationException();
+        //User user = new User(username, name, lastname, password, role);
+        //helper.saveObject(user);
+    }
+
+
+    public IUser getUserByUsername(String username) {
+        if (username == null || username.equals("")) {
+            return null;
+        }
         logger.error("Getting users from User-Service");
-		ResponseEntity<IUser> response = helper.getUserByUsername(username);
-		logger.error("Got response from User-Service" + response.toString());
-		return response.getBody();
-	}
+        ResponseEntity<IUser> response = helper.getUserByUsername(username);
+        logger.error("Got response from User-Service" + response.toString());
+        return response.getBody();
+    }
 
-	public Role getRoleByLevel(int level) {
-		throw new UnsupportedOperationException();
-		//RoleDAO roleHelper = new RoleDAO();
-		//return roleHelper.getRoleByLevel(level);
-	}
+    public Role getRoleByLevel(int level) {
+        throw new UnsupportedOperationException();
+        //RoleDAO roleHelper = new RoleDAO();
+        //return roleHelper.getRoleByLevel(level);
+    }
 
-	public boolean doesUserAlreadyExist(String username) {
-		
-    	IUser dbUser = this.getUserByUsername(username);
-    	
-    	if (dbUser != null){
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}
-	}
-	
+    public boolean doesUserAlreadyExist(String username) {
 
-	public boolean validate(User user) {
-		if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
-			return false;
-		}
-		
-		return true;
-	}
+        IUser dbUser = this.getUserByUsername(username);
+
+        if (dbUser != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public boolean validate(User user) {
+        if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
+            return false;
+        }
+
+        return true;
+    }
 
 }

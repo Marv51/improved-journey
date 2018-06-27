@@ -14,7 +14,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 	public ProductManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(ProductClient.class, "http://host.docker.internal:8080");
+				.target(ProductClient.class, "http://zuul:8081");
 	}
 
 	public List<IProduct> getProducts() {

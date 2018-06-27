@@ -17,7 +17,7 @@ public class CategoryManagerImpl implements CategoryManager{
 	public CategoryManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .encoder(new JacksonEncoder())
-				.target(CategoryClient.class, "http://host.docker.internal:8080");
+				.target(CategoryClient.class, "http://zuul:8081");
 	}
 
 	public List<ICategory> getCategories() {

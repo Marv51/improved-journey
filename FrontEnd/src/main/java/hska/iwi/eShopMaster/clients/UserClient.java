@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@FeignClient(value = "user-service")
+
 public interface UserClient {
     @RequestLine("GET /users")
     ResponseEntity<List<IUser>> getUserList();

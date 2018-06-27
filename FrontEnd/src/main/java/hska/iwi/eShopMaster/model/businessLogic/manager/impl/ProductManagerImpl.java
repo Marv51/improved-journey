@@ -15,7 +15,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 	public ProductManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(ProductClient.class, "http://localhost:8080");
+				.target(ProductClient.class, "http://docker.for.mac.localhost:8080");
 	}
 
 	public List<IProduct> getProducts() {
@@ -24,8 +24,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 	public List<IProduct> getProductsForSearchValues(String searchDescription,
 			Double searchMinPrice, Double searchMaxPrice) {
-		throw new NotImplementedException();
-		//return helper.getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice);
+		return helper.getProductListByCriteria(searchDescription, searchMinPrice, searchMaxPrice).getBody();
 	}
 
 	public IProduct getProductById(int id) {
@@ -58,8 +57,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 
 	public void deleteProductById(int id) {
-		throw new NotImplementedException();
-		//helper.deleteById(id);
+		helper.deleteProductById(id);
 	}
 
 }

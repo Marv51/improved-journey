@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-@FeignClient("product-service")
 public interface ProductClient {
     @RequestLine("GET /product")
     ResponseEntity<List<IProduct>> getProductList();
@@ -16,13 +15,14 @@ public interface ProductClient {
     @RequestLine("GET /search/product?name={name}")
     ResponseEntity<IProduct> getProductByName(@Param("name") String name);
 
-    //@RequestLine("GET /search/")
-    //ResponseEntity<List<IProduct>> getProductListByCriteria(String searchDescription, Double searchMinPrice, Double searchMaxPrice);
+    @RequestLine("GET /search/product?name={name}&minPrice={min}&maxPrice={max}")
+    ResponseEntity<List<IProduct>> getProductListByCriteria(@Param("name") String searchDescription, @Param("min")double searchMinPrice, @Param("max")double searchMaxPrice);
 
     //void saveObject(IProduct product);
 
-    //void deleteById(int id);
-
     @RequestLine("GET /product/{id}")
     ResponseEntity<IProduct> getProductById(@Param("id") int id);
+
+    @RequestLine("DELETE /product/{id}")
+    void deleteProductById(@Param("id") int id);
 }

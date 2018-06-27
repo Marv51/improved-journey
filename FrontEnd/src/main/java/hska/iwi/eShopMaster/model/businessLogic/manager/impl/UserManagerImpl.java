@@ -21,7 +21,7 @@ public class UserManagerImpl implements UserManager {
 	
 	public UserManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(UserClient.class, "http://localhost:8080");
+				.target(UserClient.class, "http://docker.for.mac.localhost:8080");
 	}
 
 	
@@ -36,6 +36,7 @@ public class UserManagerImpl implements UserManager {
 		if (username == null || username.equals("")) {
 			return null;
 		}
+        logger.error("Getting users from User-Service");
 		ResponseEntity<IUser> response = helper.getUserByUsername(username);
 		logger.error("Got response from User-Service" + response.toString());
 		return response.getBody();

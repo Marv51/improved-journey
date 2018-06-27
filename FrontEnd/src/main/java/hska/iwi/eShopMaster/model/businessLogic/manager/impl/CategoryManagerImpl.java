@@ -2,13 +2,13 @@ package hska.iwi.eShopMaster.model.businessLogic.manager.impl;
 
 
 import de.hska.vis.webshop.core.database.model.ICategory;
+import de.hska.vis.webshop.core.database.model.impl.Category;
 import feign.Feign;
 import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.CategoryClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.util.List;
 
 public class CategoryManagerImpl implements CategoryManager{
@@ -16,7 +16,8 @@ public class CategoryManagerImpl implements CategoryManager{
 	
 	public CategoryManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(CategoryClient.class, "http://localhost:8080");
+                .encoder(new JacksonEncoder())
+				.target(CategoryClient.class, "http://docker.for.mac.localhost:8080");
 	}
 
 	public List<ICategory> getCategories() {
@@ -25,14 +26,11 @@ public class CategoryManagerImpl implements CategoryManager{
 
 
 	public void addCategory(String name) {
-		throw new NotImplementedException();
-		//Category cat = new Category(name);
-		//helper.saveObject(cat);
-
+		Category cat = new Category(name);
+		helper.createCategory(cat);
 	}
 
 	public void delCategoryById(int id) {
-		throw new NotImplementedException();
-		//helper.deleteById(id);
+		helper.deleteById(id);
 	}
 }

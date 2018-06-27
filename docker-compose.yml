@@ -74,5 +74,11 @@ services:
             
     front-end:
       build: FrontEnd/.
+      environment:
+          JAVA_OPTIONS: "-Djetty.port=7777"
       ports:
-            - "8787:8080"
+            - "8787:7777"
+      depends_on:
+        - "zuul"
+      links:
+            - "zuul:zuul"

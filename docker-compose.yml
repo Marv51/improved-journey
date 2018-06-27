@@ -79,6 +79,13 @@ services:
       ports:
             - "8787:7777"
       depends_on:
-        - "zuul"
+            - "zuul"
       links:
             - "zuul:zuul"
+
+    auth:
+        build: Auth-Server/.
+        depends_on:
+            - "eureka"
+        links:
+            - "eureka:eureka"

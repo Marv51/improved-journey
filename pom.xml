@@ -19,6 +19,7 @@
         <module>Turbine</module>
         <module>Zuul-Server</module>
         <module>FrontEnd</module>
+        <module>Auth-Server</module>
     </modules>
 
     <parent>

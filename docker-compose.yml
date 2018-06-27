@@ -76,3 +76,10 @@ services:
       build: FrontEnd/.
       ports:
             - "8787:8080"
+
+    auth:
+        build: Auth-Server/.
+        depends_on:
+            - "eureka"
+        links:
+            - "eureka:eureka"

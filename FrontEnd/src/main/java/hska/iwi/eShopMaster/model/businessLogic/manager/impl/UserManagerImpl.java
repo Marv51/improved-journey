@@ -11,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import org.springframework.http.ResponseEntity;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 public class UserManagerImpl implements UserManager {
@@ -21,12 +20,12 @@ public class UserManagerImpl implements UserManager {
 	
 	public UserManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(UserClient.class, "http://docker.for.mac.localhost:8080");
+				.target(UserClient.class, "http://host.docker.internal:8080");
 	}
 
 	
 	public void registerUser(String username, String name, String lastname, String password, Role role) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 		//User user = new User(username, name, lastname, password, role);
 		//helper.saveObject(user);
 	}
@@ -43,7 +42,7 @@ public class UserManagerImpl implements UserManager {
 	}
 
 	public Role getRoleByLevel(int level) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 		//RoleDAO roleHelper = new RoleDAO();
 		//return roleHelper.getRoleByLevel(level);
 	}

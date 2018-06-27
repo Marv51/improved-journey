@@ -6,7 +6,6 @@ import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.ProductClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class ProductManagerImpl implements ProductManager {
 	
 	public ProductManagerImpl() {
 		helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-				.target(ProductClient.class, "http://docker.for.mac.localhost:8080");
+				.target(ProductClient.class, "http://host.docker.internal:8080");
 	}
 
 	public List<IProduct> getProducts() {
@@ -33,7 +32,7 @@ public class ProductManagerImpl implements ProductManager {
 
 	
 	public int addProduct(String name, double price, int categoryId, String details) {
-		throw new NotImplementedException();
+		throw new UnsupportedOperationException();
 		/*int productId = -1;
 		
 		CategoryManager categoryManager = new CategoryManagerImpl();

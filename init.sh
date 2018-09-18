@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "make sure all containers are properly set up and hit a key..."
+read
+
 echo "First round of queries... (should all fail)"
 echo ""
 echo "PRODUCTS:"
@@ -13,8 +16,8 @@ curl localhost:8080/search/users
 echo ""
 
 echo ""
-echo "Waiting for a while... (10s)"
-sleep 10
+echo "Waiting for a little while... usually couple of seconds and hit a key..."
+read
 
 echo ""
 echo "Second round of queries... (Could fail, but should not)"

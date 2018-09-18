@@ -30,10 +30,14 @@ public class User implements IUser, Serializable {
     @JoinColumn(name = "role", nullable = false)
     private Role role;
 
-    public User() {}
+    public User() {
+        // as default value, a value that is negative as signal that it's not saved in the database
+        this.id = -1;
+    }
 
     public User(String username, String firstname,
                 String lastname, String password, Role role) {
+        this();
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;

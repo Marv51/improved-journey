@@ -23,17 +23,21 @@ public class Role implements IRole, java.io.Serializable {
     @Column(name = "level1")
     private int level;
 
-    public Role() {}
+    public Role() {
+        // as default value, a value that is negative as signal that it's not saved in the database
+        this.id = -1;
+    }
 
     public Role(String typ, int level) {
+        this();
         this.typ = typ;
         this.level = level;
     }
 
     public Role(int id, String typ, int level) {
+        this.id = id;
         this.typ = typ;
         this.level = level;
-        this.id = id;
     }
 
     @Override

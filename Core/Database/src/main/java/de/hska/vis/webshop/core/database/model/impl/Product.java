@@ -26,21 +26,26 @@ public class Product implements IProduct, java.io.Serializable {
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(name = "details")
     private String details;
 
-    public Product() {}
+    public Product() {
+        // as default value, a value that is negative as signal that it's not saved in the database
+        this.id = -1;
+    }
 
     public Product(String name, double price, Category category) {
+        this();
         this.name = name;
         this.price = price;
         this.category = category;
     }
 
     public Product(String name, double price, Category category, String details) {
+        this();
         this.name = name;
         this.price = price;
         this.category = category;

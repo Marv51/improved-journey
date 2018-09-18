@@ -26,15 +26,25 @@ public class Category implements ICategory, java.io.Serializable {
                fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>(0);
 
-    public Category() {}
+    public Category() {
+        // as default value, a value that is negative as signal that it's not saved in the database
+        this.id = -1;
+    }
 
     public Category(String name) {
+        this();
         this.name = name;
     }
 
     public Category(String name, Set<Product> products) {
+        this();
         this.name = name;
         this.products = products;
+    }
+
+    public Category(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Category(int id, String name, Set<Product> products) {

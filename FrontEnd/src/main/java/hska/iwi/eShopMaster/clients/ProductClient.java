@@ -21,7 +21,9 @@ public interface ProductClient {
                                                             @Param("min") Integer searchMinPrice,
                                                             @Param("max") Integer searchMaxPrice);
 
-    //void saveObject(IProduct product);
+    @RequestLine("POST /product")
+    @Headers("Content-Type: application/json")
+    ResponseEntity<Void> saveProduct(@RequestBody IProduct product);
 
     @RequestLine("GET /product/{id}")
     ResponseEntity<IProduct> getProductById(@Param("id") int id);

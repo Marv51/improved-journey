@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class CategoryController {
@@ -69,6 +72,10 @@ public class CategoryController {
     @HystrixCommand
     @RequestMapping(value = "/category", method = RequestMethod.GET)
     public ResponseEntity<List<ICategory>> getCategoryList() {
-        return new ResponseEntity<>(dao.getObjectList(), HttpStatus.OK);
+        // this hack is necessary because hibernate criterias do not guarantee unique results
+        // with left outer joins which we have with OneToMany category - product relationship
+        List<ICategory> objectList = dao.getObjectList();
+        Set<ICategory> set = new HashSet<>(objectList);
+        return new ResponseEntity<>(new LinkedList<>(set), HttpStatus.OK);
     }
 }

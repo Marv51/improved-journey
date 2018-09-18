@@ -1,7 +1,8 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import de.hska.vis.webshop.core.database.model.ICategory;
-import de.hska.vis.webshop.core.database.model.impl.Category;
 import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
@@ -11,97 +12,125 @@ import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
 import java.util.List;
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-
 public class AddProductAction extends ActionSupport {
 
-	private static final long serialVersionUID = 39979991339088L;
+    private static final long serialVersionUID = 39979991339088L;
 
-	private String name = null;
-	private String price = null;
-	private int categoryId = 0;
-	private String details = null;
-	private List<ICategory> categories;
+    private String name = null;
+    private String price = null;
+    private double priceValue = -1;
+    private int categoryId = -1;
+    private String details = null;
+    private ICategory selectedCategory = null;
+    private List<ICategory> categories;
 
-	public String execute() throws Exception {
-		String result = "input";
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		User user = (User) session.get("webshop_user");
+    public String execute() throws Exception {
+        String result = "input";
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        User user = (User) session.get("webshop_user");
 
-		if(user != null && (user.getRole().getTyp().equals("admin"))) {
+        if (user != null && (user.getRole().getTyp().equals("admin"))) {
+            ProductManager productManager = new ProductManagerImpl();
+            boolean success = productManager.addProduct(getName(), getPriceValue(), getSelectedCategory(), getDetails());
 
-			ProductManager productManager = new ProductManagerImpl();
-			int productId = productManager.addProduct(name, Double.parseDouble(price), categoryId,
-					details);
+            if (success) {
+                result = "success";
+            }
+        }
 
-			if (productId > 0) {
-				result = "success";
-			}
-		}
+        return result;
+    }
 
-		return result;
-	}
+    @Override
+    public void validate() {
+        CategoryManager categoryManager = new CategoryManagerImpl();
+        setCategories(categoryManager.getCategories());
 
-	@Override
-	public void validate() {
-		CategoryManager categoryManager = new CategoryManagerImpl();
-		this.setCategories(categoryManager.getCategories());
-		// Validate name:
+        // Validate name:
+        if (getName() == null || getName().length() == 0) {
+            addActionError(getText("error.product.name.required"));
+        }
 
-		if (getName() == null || getName().length() == 0) {
-			addActionError(getText("error.product.name.required"));
-		}
+        // Validate priceString:
+        String localPrice = getPrice();
+        if (localPrice == null || localPrice.isEmpty()) {
+            addActionError(getText("error.product.price.required"));
+        } else {
+            try {
+                double pr = Double.parseDouble(localPrice);
+                setPriceValue(pr);
+            } catch (NumberFormatException ex) {
+                addActionError(getText("error.product.price.regex"));
+            }
+        }
 
-		// Validate price:
+        // Validate Category
+        boolean categoryValid = false;
+        for (ICategory category : this.getCategories()) {
+            if (category.getId() == this.getCategoryId()) {
+                categoryValid = true;
+                setSelectedCategory(category);
+                break;
+            }
+        }
+        if (!categoryValid) {
+            addActionError("Category doesn't exist");
+        }
+    }
 
-		if (String.valueOf(getPrice()).length() > 0) {
-			if (!getPrice().matches("[0-9]+(.[0-9][0-9]?)?")
-					|| Double.parseDouble(getPrice()) < 0.0) {
-				addActionError(getText("error.product.price.regex"));
-			}
-		} else {
-			addActionError(getText("error.product.price.required"));
-		}
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public String getPrice() {
+        return price;
+    }
 
-	public String getPrice() {
-		return price;
-	}
+    public void setPrice(String priceString) {
+        this.price = priceString;
+    }
 
-	public void setPrice(String price) {
-		this.price = price;
-	}
+    public int getCategoryId() {
+        return categoryId;
+    }
 
-	public int getCategoryId() {
-		return categoryId;
-	}
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
+    public String getDetails() {
+        return details;
+    }
 
-	public String getDetails() {
-		return details;
-	}
+    public void setDetails(String details) {
+        this.details = details;
+    }
 
-	public void setDetails(String details) {
-		this.details = details;
-	}
+    public List<ICategory> getCategories() {
+        return categories;
+    }
 
-	public List<ICategory> getCategories() {
-		return categories;
-	}
+    public void setCategories(List<ICategory> categories) {
+        this.categories = categories;
+    }
 
-	public void setCategories(List<ICategory> categories) {
-		this.categories = categories;
-	}
+    public ICategory getSelectedCategory() {
+        return selectedCategory;
+    }
+
+    public void setSelectedCategory(ICategory selectedCategory) {
+        this.selectedCategory = selectedCategory;
+    }
+
+    public double getPriceValue() {
+        return priceValue;
+    }
+
+    public void setPriceValue(double price) {
+        this.priceValue = price;
+    }
 }

@@ -36,17 +36,24 @@ public class HelperUtility<Element, PrimaryKey extends Serializable> {
         HttpStatus code = HttpStatus.OK;
         Element responseObject = null;
         try {
-            PrimaryKey parsedId = castStringTo.apply(stringId);
-            List<Element> result = dao.get(parsedId);
-            if (result == null || result.isEmpty() || result.get(0) == null) {
+            responseObject = getResponseObject(stringId, dao, castStringTo);
+            if (responseObject == null) {
                 code = HttpStatus.NOT_FOUND;
-            } else {
-                responseObject = result.get(0);
             }
         } catch (NumberFormatException ex) {
             // invalid number supplied; returning null and HTTP/400
             code = HttpStatus.BAD_REQUEST;
         }
         return new ResponseEntity<>(responseObject, code);
+    }
+
+    public Element getResponseObject(String stringId, IGenericDAO<Element, PrimaryKey> dao, Function<String, PrimaryKey> castStringTo) throws NumberFormatException {
+        PrimaryKey parsedId = castStringTo.apply(stringId);
+        List<Element> result = dao.get(parsedId);
+        if (result == null || result.isEmpty()) {
+            return null;
+        } else {
+            return result.get(0);
+        }
     }
 }

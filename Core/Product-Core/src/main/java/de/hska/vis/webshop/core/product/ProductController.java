@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 public class ProductController {
 
@@ -19,8 +21,10 @@ public class ProductController {
     private HelperUtility<IProduct, Integer> helper = new HelperUtility<>();
 
     @HystrixCommand
-    @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ResponseEntity<Void> saveProduct(@RequestBody Product product) {
+    @RequestMapping(value = "/product",
+            method = RequestMethod.POST,
+            consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> saveProduct(@RequestBody IProduct product) {
         HttpStatus code;
         if (dao.saveObject(product)) {
             code = HttpStatus.OK;

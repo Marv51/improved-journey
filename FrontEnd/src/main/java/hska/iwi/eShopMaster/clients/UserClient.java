@@ -3,7 +3,7 @@ package hska.iwi.eShopMaster.clients;
 import de.hska.vis.webshop.core.database.model.IUser;
 import feign.Param;
 import feign.RequestLine;
-import org.springframework.cloud.netflix.feign.FeignClient;
+import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -14,7 +14,7 @@ public interface UserClient {
     ResponseEntity<List<IUser>> getUserList();
 
     @RequestLine("GET /users/{name}")
-    ResponseEntity<IUser> getUserByUsername(@Param("name") String name);
+    ResponseEntity<IUser> getUserByUsername(@Param("name") String name) throws UserManagerImpl.UserNotExist;
 
     @RequestLine("GET /users/id/{id}")
     ResponseEntity<IUser> getUserByUserName(@Param("id") int id);

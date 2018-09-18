@@ -1,145 +1,107 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import de.hska.vis.webshop.core.database.model.ICategory;
 import de.hska.vis.webshop.core.database.model.IProduct;
-import de.hska.vis.webshop.core.database.model.impl.Category;
-import de.hska.vis.webshop.core.database.model.impl.Product;
 import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
+
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
+public class SearchAction extends ActionSupport {
+    private static final long serialVersionUID = -6565401833074694229L;
 
-public class SearchAction extends ActionSupport{
+    private String searchDescription = null;
+    private String searchMinPrice;
+    private String searchMaxPrice;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6565401833074694229L;
-	
-	
-	private String searchDescription = null;
-	private String searchMinPrice;
-	private String searchMaxPrice;
-	
-	private Double sMinPrice = null;
-	private Double sMaxPrice = null;
-	
-	private User user;
-	private List<IProduct> products;
-	private List<ICategory> categories;
-	
+    private Integer sMinPrice = null;
+    private Integer sMaxPrice = null;
 
-	public String execute() throws Exception {
-		
-		String result = "input";
-		
-		// Get user:
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		user = (User) session.get("webshop_user");
-		ActionContext.getContext().setLocale(Locale.US);  
-		
-		if(user != null){
-			// Search products and show results:
-			ProductManager productManager = new ProductManagerImpl();
-//			this.products = productManager.getProductsForSearchValues(this.searchDescription, this.searchMinPrice, this.searchMaxPrice);
-			if (!searchMinPrice.isEmpty()){
-				sMinPrice =  Double.parseDouble(this.searchMinPrice);
-			}
-			if (!searchMaxPrice.isEmpty()){
-				sMaxPrice =  Double.parseDouble(this.searchMaxPrice);
-			}
-			this.products = productManager.getProductsForSearchValues(this.searchDescription, sMinPrice, sMaxPrice);
-			
-			// Show all categories:
-			CategoryManager categoryManager = new CategoryManagerImpl();
-			this.categories = categoryManager.getCategories();
-			result = "success";
-		}
-		
-		return result;
-	}
-			
-		
-		public User getUser() {
-			return user;
-		}
+    private User user;
+    private List<IProduct> products;
+    private List<ICategory> categories;
 
-		public void setUser(User user) {
-			this.user = user;
-		}
-		
-		public List<IProduct> getProducts() {
-			return products;
-		}
+    public String execute() throws Exception {
+        String result = "input";
 
-		public void setProducts(List<IProduct> products) {
-			this.products = products;
-		}
-		
-		public List<ICategory> getCategories() {
-			return categories;
-		}
+        // Get user:
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        user = (User) session.get("webshop_user");
+        ActionContext.getContext().setLocale(Locale.US);
 
-		public void setCategories(List<ICategory> categories) {
-			this.categories = categories;
-		}
-		
-		
+        if (user != null) {
+            // Search products and show results:
+            if (!searchMinPrice.isEmpty()) {
+                sMinPrice = Integer.parseInt(this.searchMinPrice);
+            }
+            if (!searchMaxPrice.isEmpty()) {
+                sMaxPrice = Integer.parseInt(this.searchMaxPrice);
+            }
 
+            ProductManager productManager = new ProductManagerImpl();
+            this.products = productManager.getProductsForSearchValues(this.searchDescription, sMinPrice, sMaxPrice);
 
-	public String getSearchValue() {
-		return searchDescription;
-	}
+            // Show all categories:
+            CategoryManager categoryManager = new CategoryManagerImpl();
+            this.categories = categoryManager.getCategories();
+            result = "success";
+        }
 
+        return result;
+    }
 
-	public void setSearchValue(String searchValue) {
-		this.searchDescription = searchValue;
-	}
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
 
-	public String getSearchMinPrice() {
-		return searchMinPrice;
-	}
+    public List<IProduct> getProducts() {
+        return products;
+    }
 
+    public void setProducts(List<IProduct> products) {
+        this.products = products;
+    }
 
-	public void setSearchMinPrice(String searchMinPrice) {
-		this.searchMinPrice = searchMinPrice;
-	}
+    public List<ICategory> getCategories() {
+        return categories;
+    }
 
+    public void setCategories(List<ICategory> categories) {
+        this.categories = categories;
+    }
 
-	public String getSearchMaxPrice() {
-		return searchMaxPrice;
-	}
+    public String getSearchValue() {
+        return searchDescription;
+    }
 
+    public void setSearchValue(String searchValue) {
+        this.searchDescription = searchValue;
+    }
 
-	public void setSearchMaxPrice(String searchMaxPrice) {
-		this.searchMaxPrice = searchMaxPrice;
-	}
+    public String getSearchMinPrice() {
+        return searchMinPrice;
+    }
 
+    public void setSearchMinPrice(String searchMinPrice) {
+        this.searchMinPrice = searchMinPrice;
+    }
 
-//	public Double getSearchMinPrice() {
-//		return searchMinPrice;
-//	}
-//
-//
-//	public void setSearchMinPrice(Double searchMinPrice) {
-//		this.searchMinPrice = searchMinPrice;
-//	}
-//
-//
-//	public Double getSearchMaxPrice() {
-//		return searchMaxPrice;
-//	}
-//
-//
-//	public void setSearchMaxPrice(Double searchMaxPrice) {
-//		this.searchMaxPrice = searchMaxPrice;
-//	}
+    public String getSearchMaxPrice() {
+        return searchMaxPrice;
+    }
+
+    public void setSearchMaxPrice(String searchMaxPrice) {
+        this.searchMaxPrice = searchMaxPrice;
+    }
 }

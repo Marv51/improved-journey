@@ -1,10 +1,11 @@
 package hska.iwi.eShopMaster.clients;
 
 import de.hska.vis.webshop.core.database.model.IProduct;
+import feign.Headers;
 import feign.Param;
 import feign.RequestLine;
-import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -16,7 +17,9 @@ public interface ProductClient {
     ResponseEntity<IProduct> getProductByName(@Param("name") String name);
 
     @RequestLine("GET /search/product?name={name}&minPrice={min}&maxPrice={max}")
-    ResponseEntity<List<IProduct>> getProductListByCriteria(@Param("name") String searchDescription, @Param("min")double searchMinPrice, @Param("max")double searchMaxPrice);
+    ResponseEntity<List<IProduct>> getProductListByCriteria(@Param("name") String searchDescription,
+                                                            @Param("min") Integer searchMinPrice,
+                                                            @Param("max") Integer searchMaxPrice);
 
     //void saveObject(IProduct product);
 

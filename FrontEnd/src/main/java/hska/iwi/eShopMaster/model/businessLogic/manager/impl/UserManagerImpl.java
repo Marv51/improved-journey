@@ -4,6 +4,8 @@ import de.hska.vis.webshop.core.database.model.IUser;
 import de.hska.vis.webshop.core.database.model.impl.Role;
 import de.hska.vis.webshop.core.database.model.impl.User;
 import feign.Feign;
+import feign.Response;
+import feign.codec.ErrorDecoder;
 import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
@@ -19,7 +21,7 @@ public class UserManagerImpl implements UserManager {
     private final static Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
 
     public UserManagerImpl() {
-        helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+        helper = Feign.builder().errorDecoder(new UserErrorDecoder()).decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .target(UserClient.class, "http://zuul:8081");
     }
 
@@ -27,7 +29,7 @@ public class UserManagerImpl implements UserManager {
     public void registerUser(String username, String name, String lastname, String password, Role role) {
         throw new UnsupportedOperationException();
         //User user = new User(username, name, lastname, password, role);
-        //helper.saveObject(user);
+        //helper.saveProduct(user);
     }
 
 
@@ -36,9 +38,13 @@ public class UserManagerImpl implements UserManager {
             return null;
         }
         logger.error("Getting users from User-Service");
-        ResponseEntity<IUser> response = helper.getUserByUsername(username);
-        logger.error("Got response from User-Service" + response.toString());
-        return response.getBody();
+        try {
+            ResponseEntity<IUser> response = helper.getUserByUsername(username);
+            logger.error("Got response from User-Service" + response.toString());
+            return response.getBody();
+        } catch (UserNotExist ex) {
+            return null;
+        }
     }
 
     public Role getRoleByLevel(int level) {
@@ -48,23 +54,27 @@ public class UserManagerImpl implements UserManager {
     }
 
     public boolean doesUserAlreadyExist(String username) {
-
-        IUser dbUser = this.getUserByUsername(username);
-
-        if (dbUser != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.getUserByUsername(username) != null;
     }
 
 
     public boolean validate(User user) {
-        if (user.getFirstname().isEmpty() || user.getPassword().isEmpty() || user.getRole() == null || user.getLastname() == null || user.getUsername() == null) {
-            return false;
-        }
-
-        return true;
+        return !user.getFirstname().isEmpty()
+                && !user.getPassword().isEmpty()
+                && user.getRole() != null
+                && user.getLastname() != null
+                && user.getUsername() != null;
     }
 
+    private class UserErrorDecoder implements ErrorDecoder {
+        @Override
+        public Exception decode(String methodKey, Response response) {
+            logger.error("Error decoder methodKey: " + methodKey);
+            logger.error("Response status: " + response.status());
+            return new UserNotExist();
+        }
+    }
+
+    public class UserNotExist extends Exception {
+    }
 }

@@ -34,7 +34,7 @@ public class ProductDeserializer extends JsonDeserializer {
 
 
         JsonNode idNode = node.get("id");
-        if (idNode == null) {
+        if (idNode == null || idNode.asInt() < 0) {
             // new unsaved product
             // category can only be in new things, as if they come from product service they would be skipped (json ignore)
             Category category = mapper.readValue(node.get("category").toString(), Category.class);

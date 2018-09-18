@@ -33,7 +33,7 @@ public class CategoryDeserializer extends JsonDeserializer {
 
         // id could be null if it's a new unsaved object
         JsonNode idNode = node.get("id");
-        if (idNode == null) {
+        if (idNode == null || idNode.asInt() < 0) {
             // new unsaved object
             // therefore also no products are saved with it
             return new Category(name);

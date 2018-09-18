@@ -28,7 +28,7 @@ public class RoleDeserializer extends JsonDeserializer {
         int level = node.get("level").asInt();
 
         JsonNode idNode = node.get("id");
-        if (idNode == null) {
+        if (idNode == null || idNode.asInt() < 0) {
             // new unsaved role
             return new Role(typ, level);
         }

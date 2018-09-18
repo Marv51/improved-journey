@@ -36,7 +36,7 @@ public class UserDeserializer extends JsonDeserializer {
         Role role = mapper.readValue(node.get("role").toString(), Role.class);
 
         JsonNode idNode = node.get("id");
-        if (idNode == null) {
+        if (idNode == null || idNode.asInt() < 0) {
             // new unsaved user
             return new User(username, firstname, lastname, password, role);
         }

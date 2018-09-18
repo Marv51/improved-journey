@@ -52,7 +52,9 @@ public class ProductController {
             } else {
                 savedProduct.setName(product.getName());
                 savedProduct.setPrice(product.getPrice());
-                savedProduct.setCategory(product.getCategory());
+                if (product.getCategory() != null) {
+                    savedProduct.setCategory(product.getCategory());
+                }
                 savedProduct.setDetails(product.getDetails());
                 if (dao.updateObject(savedProduct)) {
                     // debugging code if something goes wrong while saving

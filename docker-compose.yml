@@ -55,7 +55,6 @@ services:
             - "eureka"
         links:
             - "eureka:eureka"
-            - "user:user"
 
     zuul:
         build: Zuul-Server/.
@@ -63,15 +62,9 @@ services:
             - "8080:8081"
         depends_on:
             - "eureka"
-            - "user"
-            - "search"
-            - "category"
         links:
             - "eureka:eureka"
-            - "user:user"
-            - "search:search"
-            - "category:category"
-            
+
     front-end:
       build: FrontEnd/.
       environment:

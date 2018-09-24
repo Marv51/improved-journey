@@ -1,6 +1,8 @@
 server:
   port: 8080
-  
+#  context-path: /auth
+#  user-forward-headers: false
+
 spring:
   application:
     name: auth-server
@@ -16,3 +18,15 @@ security:
       auto-approve-scopes: .*
     authorization:
       check-token-access: permitAll()
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka/
+  instance:
+    preferIpAddress: true
+    leaseRenewalIntervalInSeconds: 5
+    status-page-url-path: /info
+    health-check-url-path: /health
+    metadataMap:
+      instanceId: "${spring.application.name}:${random.value}"

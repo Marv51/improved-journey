@@ -1,5 +1,6 @@
 package de.hska.vis.webshop.authserver;
 
+import de.hska.vis.webshop.authserver.exception.UserNotExist;
 import de.hska.vis.webshop.core.database.model.IUser;
 import feign.Param;
 import feign.RequestLine;

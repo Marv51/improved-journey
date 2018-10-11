@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 /**
  * Rewrites the OAuth2 configuration.
@@ -27,17 +26,6 @@ class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdap
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
 
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        AuthserverApplication.logger.error("CONFIGURATION: GETTING KEYPAIR FROM KEYSTORE");
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        KeyPair keyPair = new KeyStoreKeyFactory(new ClassPathResource("keystore.jks"), "foobar".toCharArray())
-                .getKeyPair("test");
-        converter.setKeyPair(keyPair);
-        AuthserverApplication.logger.error("CONFIGURATION: GOT KEYPAIR FROM KEYSTORE");
-        return converter;
-    }
-
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
@@ -47,13 +35,12 @@ class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdap
                 .scopes("openid");
     }
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .authenticationManager(authenticationManager)
-                .userDetailsService(new UDS())
-                .accessTokenConverter(jwtAccessTokenConverter());
-    }
+//    @Override
+//    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+//        endpoints
+//                .authenticationManager(authenticationManager)
+//                .userDetailsService(new UDS());
+//    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {

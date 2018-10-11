@@ -78,7 +78,9 @@ services:
 
     auth:
         build: Auth-Server/.
+        ports:
+          - "32000:8080"
         depends_on:
             - "eureka"
         links:
-            - "eureka:eureka"
+            - "zuul:zuul"

@@ -15,14 +15,11 @@ class UDS implements UserDetailsService {
     private final UserClient userClient;
 
     public UDS() {
-        AuthserverApplication.logger.error("INITIALIZING UDS");
         userClient = Feign.builder().errorDecoder(new UserErrorDecoder()).decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .target(UserClient.class, "http://zuul:8081");
-        AuthserverApplication.logger.error("INITIALIZED UDS");
     }
 
     private IUser getUser(String username) throws UserNotExist, NullPointerException {
-        AuthserverApplication.logger.error("UDS: GETTING USER");
         return userClient.getUserByUsername(username).getBody();
     }
 

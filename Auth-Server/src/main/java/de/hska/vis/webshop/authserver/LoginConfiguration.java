@@ -1,9 +1,7 @@
 package de.hska.vis.webshop.authserver;
 
-import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.encoding.PlaintextPasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,7 +11,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * Defines the login configuration and wiring of the {@link UDS}.
  */
-@Order(ManagementServerProperties.ACCESS_OVERRIDE_ORDER)
 @Configuration 
 class LoginConfiguration extends WebSecurityConfigurerAdapter {
 

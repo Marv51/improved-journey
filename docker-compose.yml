@@ -59,7 +59,7 @@ services:
     zuul:
         build: Zuul-Server/.
         ports:
-            - "8080:8081"
+            - "8081:8081"
         depends_on:
             - "eureka"
         links:
@@ -80,5 +80,7 @@ services:
         build: Auth-Server/.
         depends_on:
             - "eureka"
+        ports:
+            - "8080:8080
         links:
             - "eureka:eureka"

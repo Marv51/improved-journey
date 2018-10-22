@@ -1,7 +1,6 @@
-FROM openjdk:8-jre-alpine3.7
+FROM tomcat
 MAINTAINER Magenta Swamp Blaster
 
-ADD ./target/authserver-1.0-SNAPSHOT.jar /home
-CMD ["java", "-jar", "/home/authserver-1.0-SNAPSHOT.jar"]
+ADD ./target/SpringSecurityOAuth2.war /usr/local/tomcat/webapps/myapp.war
 
 EXPOSE 8080

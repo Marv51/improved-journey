@@ -79,8 +79,8 @@ services:
     auth:
         build: Auth-Server/.
         depends_on:
-            - "eureka"
+            - "database"
         ports:
-            - "8080:8080
+            - "8080:8080"
         links:
-            - "eureka:eureka"
+            - "database:database"

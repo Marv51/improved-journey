@@ -27,6 +27,9 @@ zuul:
       serviceId: PRODUCT-SERVICE
       strip-prefix: false
 
+    oauth-service:
+      path: /auth/**
+      url: http://auth:8080
 
 eureka:
   instance:

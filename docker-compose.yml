@@ -63,6 +63,7 @@ services:
         depends_on:
             - "eureka"
         links:
+            - "auth:auth"
             - "eureka:eureka"
 
     front-end:

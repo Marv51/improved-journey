@@ -40,13 +40,15 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka/
 
-
+endpoints:
+  routes:
+    sensitive: false
 
 ribbon:
   readTimeout: 30000
   eureka:
     enabled: true
-    
+
 hystrix:
   command:
     default:

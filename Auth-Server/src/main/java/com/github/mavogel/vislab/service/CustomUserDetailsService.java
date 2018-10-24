@@ -38,6 +38,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
@@ -55,6 +56,8 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
+    private static final String SPECIAL_PW =
+            new BCryptPasswordEncoder().encode("special");
 
     private IUserDAO userDAO = DaoFactory.getUserDao();
 
@@ -63,17 +66,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     })
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-
+        LOG.info("LOOKING FOR USER: " + username);
         IUser user;
         if ("special".equals(username)) {
+            LOG.info("Found someone special");
             user = new User(username, // username -> "special"
                     username, // firstname
                     username, // lastname
-                    "special", // password
+                    SPECIAL_PW, // password
                     new Role("ADMIN", 0)); // adminuser
         } else {
             user = userDAO.getUserByUsername(username);
             if (user == null) {
+                LOG.info("NO USER " + username + " exists");
                 throw new UsernameNotFoundException("User not found: " + username);
             }
         }

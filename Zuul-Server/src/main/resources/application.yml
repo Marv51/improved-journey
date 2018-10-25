@@ -67,8 +67,8 @@ security:
     sso:
       login-path: /login
     client:
-      access-token-uri: http://auth:8080/oauth/token
-      user-authorization-uri: /auth/oauth/authorize
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
       client-id: client
       client-secret: secret
     resource:

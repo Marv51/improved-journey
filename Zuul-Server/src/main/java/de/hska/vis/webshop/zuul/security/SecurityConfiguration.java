@@ -74,12 +74,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private ResourceServerTokenServices tokenServices;
 
-    @Bean
+/*    @Bean
     @Primary
     public OAuth2ClientContextFilter dynamicOauth2ClientContextFilter() {
         return new DynamicOauth2ClientContextFilter();
     }
-
+*/
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http

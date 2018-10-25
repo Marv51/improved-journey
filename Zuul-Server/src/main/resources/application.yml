@@ -1,3 +1,10 @@
+spring:
+  aop:
+    proxyTargetClass: true
+  application:
+    name: api-gateway
+
+# Define the port where the API gateway server would be running
 server:
   port: 8081
 
@@ -27,9 +34,11 @@ zuul:
       serviceId: PRODUCT-SERVICE
       strip-prefix: false
 
-    oauth-service:
-      path: /auth/**
-      url: http://auth:8080
+    uaa-service:
+      sensitiveHeaders:
+      path: /uaa/**
+      stripPrefix: false
+  add-host-header: true
 
 eureka:
   instance:
@@ -61,16 +70,17 @@ hystrix:
             timeoutInMilliseconds: 30000
 
 security:
+  # Disable Spring Boot basic authentication
   basic:
     enabled: false
   oauth2:
     sso:
-      login-path: /login
+      loginPath: /login
     client:
-      access-token-uri: http://localhost:8080/oauth/token
-      user-authorization-uri: http://localhost:8080/oauth/authorize
-      client-id: client
-      client-secret: secret
+      accessTokenUri: http://uaa-service/uaa/oauth/token
+      userAuthorizationUri: /uaa/oauth/authorize
+      clientId: acme
+      clientSecret: acmesecret
     resource:
       jwt:
         keyValue: |
@@ -79,3 +89,21 @@ security:
           -----END PUBLIC KEY-----
       id: openid
       serviceId: ${PREFIX:}resource
+
+logging:
+  level.org.springframework.security: DEBUG
+
+---
+
+spring:
+  profiles: docker
+
+server:
+  port: ${SERVICE_PORT}
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: ${REGISTRY_URL}

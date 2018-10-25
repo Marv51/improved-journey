@@ -1,7 +1,7 @@
 FROM openjdk:8-jre-alpine3.7
 MAINTAINER Magenta Swamp Blaster
 
-ADD ./target/uaa-service-2.0.5.RELEASE.jar /home
-CMD ["java", "-jar", "/home/uaa-service-2.0.5.RELEASE.jar"]
+ADD ./target/webshop.auth-1.0-SNAPSHOT.jar /home
+CMD ["java", "-jar", "/home/webshop.auth-1.0-SNAPSHOT.jar"]
 
 EXPOSE 8080

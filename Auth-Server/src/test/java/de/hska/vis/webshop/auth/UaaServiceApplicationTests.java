@@ -1,4 +1,4 @@
-package com.github.mavogel.vislab;
+package de.hska.vis.webshop.auth;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

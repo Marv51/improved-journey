@@ -32,37 +32,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-/*
- *  The MIT License (MIT)
- *
- *  Copyright (c) 2016 Manuel Vogel
- *
- *  Permission is hereby granted, free of charge, to any person obtaining a copy
- *  of this software and associated documentation files (the "Software"), to deal
- *  in the Software without restriction, including without limitation the rights
- *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *  copies of the Software, and to permit persons to whom the Software is
- *  furnished to do so, subject to the following conditions:
- *
- *  The above copyright notice and this permission notice shall be included in all
- *  copies or substantial portions of the Software.
- *
- *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *  SOFTWARE.
- *
- *  https://opensource.org/licenses/MIT
- */
-
-/**
- * Rewrites the security configuration to allow the redirect of the API-Gateway
- * to itself and then the uaa-service. Defines also the paths which are directly
- * accessible without being authorized.
- */
 @Configuration
 @EnableOAuth2Sso
 @EnableResourceServer
@@ -72,34 +41,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private static final String CSRF_HEADER_NAME = "X-XSRF-TOKEN";
 
     @Autowired
-    private ResourceServerTokenServices tokenServices;
+    private ResourceServerTokenServices resourceServerTokenServices;
 
-/*    @Bean
+    @Bean
     @Primary
     public OAuth2ClientContextFilter dynamicOauth2ClientContextFilter() {
         return new DynamicOauth2ClientContextFilter();
     }
-*/
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers(
-                        "/auth/**",
-                        "/uaa/**",
-                        "/login",
-                        "/user/register",
-                        "/docs/**",
-                        "/routes",
-                        "/hystrix.stream").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .csrf().requireCsrfProtectionMatcher(csrfRequestMatcher()).csrfTokenRepository(csrfTokenRepository())
-                .and()
-                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
-                .addFilterAfter(oAuth2AuthenticationProcessingFilter(), AbstractPreAuthenticatedProcessingFilter.class)
-                .logout().permitAll()
-                .logoutSuccessUrl("/");
+        http.authorizeRequests().antMatchers("/uaa/**", "/login").permitAll().anyRequest().authenticated()
+            .and()
+            .csrf().requireCsrfProtectionMatcher(csrfRequestMatcher()).csrfTokenRepository(csrfTokenRepository())
+            .and()
+            .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+            .addFilterAfter(oAuth2AuthenticationProcessingFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+            .logout().permitAll()
+            .logoutSuccessUrl("/");
     }
 
     private OAuth2AuthenticationProcessingFilter oAuth2AuthenticationProcessingFilter() {
@@ -113,25 +72,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     private AuthenticationManager oauthAuthenticationManager() {
-        OAuth2AuthenticationManager oauthAuthenticationManager = new OAuth2AuthenticationManager();
-        oauthAuthenticationManager.setResourceId("openid");
-        oauthAuthenticationManager.setTokenServices(tokenServices);
-        oauthAuthenticationManager.setClientDetailsService(null);
+        OAuth2AuthenticationManager oAuth2AuthenticationManager = new OAuth2AuthenticationManager();
+        oAuth2AuthenticationManager.setResourceId("apigateway");
+        oAuth2AuthenticationManager.setTokenServices(resourceServerTokenServices);
+        oAuth2AuthenticationManager.setClientDetailsService(null);
 
-        return oauthAuthenticationManager;
+        return oAuth2AuthenticationManager;
     }
 
     private RequestMatcher csrfRequestMatcher() {
         return new RequestMatcher() {
-            // Always allow all the HTTP methods
-            private final Pattern allowedMethods = Pattern.compile("^(GET|POST|PATCH|PUT|DELETE|HEAD|OPTIONS|TRACE)$");
+            // Always allow the HTTP GET method
+            private final Pattern allowedMethods = Pattern.compile("^(GET|HEAD|OPTIONS|TRACE)$");
 
             // Disable CSFR protection on the following urls:
-            private final AntPathRequestMatcher[] requestMatchers = {
-                    new AntPathRequestMatcher("/uaa/**"),
-                    new AntPathRequestMatcher("/user/register"),
-                    new AntPathRequestMatcher("/auth/**")
-            };
+            private final AntPathRequestMatcher[] requestMatchers = { new AntPathRequestMatcher("/uaa/**") };
 
             @Override
             public boolean matches(HttpServletRequest request) {

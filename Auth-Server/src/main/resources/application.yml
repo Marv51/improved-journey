@@ -27,6 +27,8 @@ eureka:
 security:
   basic:
     enabled: false
+  user:
+    password: password
   ignored: /css/**,/js/**,/favicon.ico,/webjars/**
 
 logging:

@@ -15,7 +15,6 @@
         <module>Core</module>
         <module>Composite</module>
         <module>Eureka-Server</module>
-        <module>Hystrix-Server</module>
         <module>Turbine</module>
         <module>Zuul-Server</module>
         <module>FrontEnd</module>

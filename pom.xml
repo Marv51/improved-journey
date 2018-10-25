@@ -20,6 +20,7 @@
         <module>Zuul-Server</module>
         <module>FrontEnd</module>
         <module>Auth-Server</module>
+        <module>Auth-Client</module>
     </modules>
 
     <parent>

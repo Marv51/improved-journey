@@ -1,86 +1,95 @@
 version: '3.3'
 
 services:
-    database:
-        image: mavogel/hska-vis-web-shop-db-image
-        environment:
-            MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
-            MYSQL_DATABASE: webshop
-            MYSQL_USER: webshopuser
-            MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
-        ports:
-            - "3306:3306"
-
-    eureka:
-        build: Eureka-Server/.
-        ports:
-            - "8761:8761"
-
-    turbine:
-        build: Turbine/.
-        links:
-            - "eureka:eureka"
-            - "user:user"
-            - "category:category"
-            - "search:search"
-            - "zuul:zuul"
-
-    user:
-        build: Core/User-Core/.
-        depends_on:
-            - "eureka"
-        links:
-            - "database:database"
-            - "eureka:eureka"
-
-    category:
-        build: Core/Category-Core/.
-        depends_on:
-            - "eureka"
-        links:
-            - "database:database"
-            - "eureka:eureka"
-
-    product:
-        build: Core/Product-Core/.
-        depends_on:
-            - "eureka"
-        links:
-            - "database:database"
-            - "eureka:eureka"
-
-    search:
-        build: Composite/Search-Service/.
-        depends_on:
-            - "eureka"
-        links:
-            - "eureka:eureka"
-
-    zuul:
-        build: Zuul-Server/.
-        ports:
-            - "8081:8081"
-        depends_on:
-            - "eureka"
-        links:
-            - "eureka:eureka"
-
-    front-end:
-      build: FrontEnd/.
-      environment:
-          JAVA_OPTIONS: "-Djetty.port=7777"
-      ports:
-            - "8787:7777"
-      depends_on:
-            - "zuul"
-      links:
-            - "zuul:zuul"
+#    database:
+#        image: mavogel/hska-vis-web-shop-db-image
+#        environment:
+#            MYSQL_ROOT_PASSWORD: c8de110f37300a53a971749
+#            MYSQL_DATABASE: webshop
+#            MYSQL_USER: webshopuser
+#            MYSQL_PASSWORD: 240b2c6d58ff2ce2f508b49f
+#        ports:
+#            - "3306:3306"
+#
+#    eureka:
+#        build: Eureka-Server/.
+#        ports:
+#            - "8761:8761"
+#
+#    turbine:
+#        build: Turbine/.
+#        links:
+#            - "eureka:eureka"
+#            - "user:user"
+#            - "category:category"
+#            - "search:search"
+#            - "zuul:zuul"
+#
+#    user:
+#        build: Core/User-Core/.
+#        depends_on:
+#            - "eureka"
+#        links:
+#            - "database:database"
+#            - "eureka:eureka"
+#
+#    category:
+#        build: Core/Category-Core/.
+#        depends_on:
+#            - "eureka"
+#        links:
+#            - "database:database"
+#            - "eureka:eureka"
+#
+#    product:
+#        build: Core/Product-Core/.
+#        depends_on:
+#            - "eureka"
+#        links:
+#            - "database:database"
+#            - "eureka:eureka"
+#
+#    search:
+#        build: Composite/Search-Service/.
+#        depends_on:
+#            - "eureka"
+#        links:
+#            - "eureka:eureka"
+#
+#    zuul:
+#        build: Zuul-Server/.
+#        ports:
+#            - "8081:8081"
+#        depends_on:
+#            - "eureka"
+#        links:
+#            - "eureka:eureka"
+#
+#    front-end:
+#      build: FrontEnd/.
+#      environment:
+#          JAVA_OPTIONS: "-Djetty.port=7777"
+#      ports:
+#            - "8787:7777"
+#      depends_on:
+#            - "zuul"
+#      links:
+#            - "zuul:zuul"
 
     auth:
         build: Auth-Server/.
-        depends_on:
-            - "eureka"
+#        depends_on:
+#            - "eureka"
         ports:
-            - "8080:8080
-        links:
-            - "eureka:eureka"
+            - "8080:8080"
+ #       links:
+ #           - "eureka:eureka"
+
+    auth-client:
+        build: Auth-Client/.
+#        depends_on:
+#        - "eureka"
+        ports:
+            - "9999:8080"
+#        links:
+#            - "eureka:eureka"

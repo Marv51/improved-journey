@@ -8,6 +8,7 @@ import de.hska.vis.webshop.core.database.model.impl.Category;
 import de.hska.vis.webshop.core.util.HelperUtility;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -35,6 +36,7 @@ public class CategoryController {
 
     @HystrixCommand
     @RequestMapping(value = "/category/{stringId}", method = RequestMethod.GET)
+//    @PreAuthorize("#oauth2.hasScope('openid') and hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<ICategory> getCategoryById(@PathVariable String stringId) {
         return helper.getResponse(stringId, dao, Integer::parseInt);
     }

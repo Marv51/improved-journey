@@ -24,8 +24,6 @@ import java.util.List;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private static final Logger LOG = LoggerFactory.getLogger(CustomUserDetailsService.class);
-    private static final String SPECIAL_PW =
-            new BCryptPasswordEncoder().encode("special");
 
     private IUserDAO userDAO = DaoFactory.getUserDao();
 

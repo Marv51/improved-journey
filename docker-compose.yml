@@ -76,6 +76,7 @@ services:
             - "zuul"
       links:
             - "zuul:zuul"
+            - "auth:auth"
 
     auth:
         build: Auth-Server/.

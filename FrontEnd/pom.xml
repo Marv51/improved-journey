@@ -57,6 +57,12 @@
             <artifactId>feign-jackson</artifactId>
             <version>8.18.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.github.scribejava</groupId>
+            <artifactId>scribejava-core</artifactId>
+            <version>6.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

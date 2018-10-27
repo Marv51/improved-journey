@@ -16,6 +16,7 @@
         <action name="LoginAction" class="hska.iwi.eShopMaster.controller.LoginAction">
             <result name="success">/pages/start.jsp</result>
             <result name="input">index.jsp</result>
+            <result name="redirect" type="redirect">${url}</result>
         </action>
 
         <!-- Register: -->

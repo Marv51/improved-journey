@@ -1,8 +1,11 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.github.scribejava.core.builder.ServiceBuilder;
+import com.github.scribejava.core.oauth.OAuth20Service;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import de.hska.vis.webshop.core.database.model.IUser;
+import hska.iwi.eShopMaster.WebShopApi;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
 import org.slf4j.Logger;
@@ -21,8 +24,30 @@ public class LoginAction extends ActionSupport {
     private String lastname;
     private String role;
 
+
+    private String url;
+
+    public String getUrl()
+    {
+        return url;
+    }
+
+
     @Override
     public String execute() throws Exception {
+
+        final OAuth20Service service = new ServiceBuilder("acme")
+                .apiSecret("acmesecret")
+                .callback("http://localhost:8787/login")
+                .scope("openid").debug()
+                .build(WebShopApi.instance());
+
+        final String authorizationUrl = service.getAuthorizationUrl();
+
+        url = authorizationUrl;
+        return "redirect";
+
+/*
         // Return string:
         String result = "input";
 
@@ -54,7 +79,9 @@ public class LoginAction extends ActionSupport {
             logger.error("ERROR USERNAME WRONG");
         }
         logger.error("LOGGED IN SUCCESSFULLY");
-        return result;
+
+
+        return result;*/
     }
 
     @Override

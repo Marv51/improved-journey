@@ -71,7 +71,7 @@ services:
       environment:
           JAVA_OPTIONS: "-Djetty.port=7777"
       ports:
-            - "8787:7777"
+            - "8080:7777"
       depends_on:
             - "zuul"
       links:
@@ -83,6 +83,6 @@ services:
         depends_on:
             - "database"
         ports:
-            - "8080:8080"
+            - "9090:8080"
         links:
             - "database:database"

@@ -79,6 +79,10 @@
             <result name="success">/pages/categories.jsp</result>
         </action>
 
+        <action name="OauthResponseAction" class="hska.iwi.eShopMaster.controller.OauthResponseAction">
+            <result name="success">/pages/start.jsp</result>
+        </action>
+
         <action name="index">
             <result>/index.jsp</result>
         </action>

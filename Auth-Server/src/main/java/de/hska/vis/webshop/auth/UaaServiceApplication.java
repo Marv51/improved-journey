@@ -1,5 +1,6 @@
 package de.hska.vis.webshop.auth;
 
+import de.hska.vis.webshop.auth.userdetails.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
@@ -7,6 +8,7 @@ import org.springframework.boot.actuate.autoconfigure.ManagementServerProperties
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -33,6 +35,7 @@ import java.security.KeyPair;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableWebSecurity
+@EnableFeignClients
 public class UaaServiceApplication extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {

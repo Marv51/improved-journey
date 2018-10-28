@@ -19,12 +19,12 @@ public class WebShopApi extends DefaultApi20 {
 
     @Override
     public String getAccessTokenEndpoint() {
-        return "http://localhost:8080/uaa/oauth/token";
+        return "http://auth:8080/uaa/oauth/token";
     }
 
     @Override
     protected String getAuthorizationBaseUrl() {
-        return "http://localhost:8080/uaa/oauth/authorize";
+        return "http://localhost:9090/uaa/oauth/authorize";
     }
 
     @Override

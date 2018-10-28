@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public class AddProductAction extends ActionSupport {
-
     private static final long serialVersionUID = 39979991339088L;
 
     private String name = null;

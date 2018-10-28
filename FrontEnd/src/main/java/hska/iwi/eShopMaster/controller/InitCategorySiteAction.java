@@ -1,7 +1,8 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import de.hska.vis.webshop.core.database.model.ICategory;
-import de.hska.vis.webshop.core.database.model.impl.Category;
 import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl;
@@ -9,68 +10,56 @@ import hska.iwi.eShopMaster.model.businessLogic.manager.impl.CategoryManagerImpl
 import java.util.List;
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-
 public class InitCategorySiteAction extends ActionSupport {
+    private static final long serialVersionUID = -1108136421569378914L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1108136421569378914L;
+    private String pageToGoTo;
+    private User user;
+    private List<ICategory> categories;
 
-	private String pageToGoTo;
-	private User user;
+    public String execute() throws Exception {
+        String res = "input";
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        user = (User) session.get("webshop_user");
+        boolean isAdmin = true;
+        if (user != null && isAdmin) {
+            CategoryManager categoryManager = new CategoryManagerImpl();
+            this.setCategories(categoryManager.getCategories());
 
-	private List<ICategory> categories;
+            if (pageToGoTo != null) {
+                if (pageToGoTo.equals("c")) {
+                    res = "successC";
+                } else if (pageToGoTo.equals("p")) {
+                    res = "successP";
+                }
+            }
+        }
 
-	public String execute() throws Exception {
-		
-		String res = "input";
+        return res;
+    }
 
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		user = (User) session.get("webshop_user");
-		boolean isAdmin = true;
-		if(user != null && isAdmin) {
+    public List<ICategory> getCategories() {
+        return categories;
+    }
 
-			CategoryManager categoryManager = new CategoryManagerImpl();
-			this.setCategories(categoryManager.getCategories());
-			
-			if(pageToGoTo != null){
-				if(pageToGoTo.equals("c")){
-					res = "successC";	
-				}
-				else if(pageToGoTo.equals("p")){
-					res = "successP";
-				}				
-			}
-		}
-		
-		return res;
-	}
+    public void setCategories(List<ICategory> categories) {
+        this.categories = categories;
+    }
 
-	public List<ICategory> getCategories() {
-		return categories;
-	}
+    public String getPageToGoTo() {
+        return pageToGoTo;
+    }
 
-	public void setCategories(List<ICategory> categories) {
-		this.categories = categories;
-	}
+    public void setPageToGoTo(String pageToGoTo) {
+        this.pageToGoTo = pageToGoTo;
+    }
 
-	public String getPageToGoTo() {
-		return pageToGoTo;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public void setPageToGoTo(String pageToGoTo) {
-		this.pageToGoTo = pageToGoTo;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 }

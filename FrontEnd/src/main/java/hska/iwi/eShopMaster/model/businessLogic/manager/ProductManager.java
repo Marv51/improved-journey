@@ -6,18 +6,13 @@ import de.hska.vis.webshop.core.database.model.IProduct;
 import java.util.List;
 
 public interface ProductManager {
+    List<IProduct> getProducts();
 
-    public List<IProduct> getProducts();
+    IProduct getProductById(int id);
 
-    public IProduct getProductById(int id);
+    boolean addProduct(String name, double price, ICategory categoryId, String details);
 
-    //public IProduct getProductByName(String name);
+    List<IProduct> getProductsForSearchValues(String searchValue, Integer searchMinPrice, Integer searchMaxPrice);
 
-    public boolean addProduct(String name, double price, ICategory categoryId, String details);
-
-    public List<IProduct> getProductsForSearchValues(String searchValue, Integer searchMinPrice, Integer searchMaxPrice);
-
-    //public boolean deleteProductsByCategoryId(int categoryId);
-
-    public void deleteProductById(int id);
+    void deleteProductById(int id);
 }

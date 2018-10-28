@@ -19,7 +19,9 @@ public class ProductManagerImpl implements ProductManager {
     private ProductClient helper;
 
     public ProductManagerImpl() {
-        helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder())).encoder(new JacksonEncoder())
+        helper = Feign.builder()
+                .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+                .encoder(new JacksonEncoder())
                 .target(ProductClient.class, "http://zuul:8081");
     }
 
@@ -38,7 +40,6 @@ public class ProductManagerImpl implements ProductManager {
         return helper.getProductById(id).getBody();
     }
 
-
     public boolean addProduct(String name, double price, @NotNull ICategory category, String details) {
         IProduct product;
         if (details == null) {
@@ -50,7 +51,6 @@ public class ProductManagerImpl implements ProductManager {
         ResponseEntity<Void> response = helper.saveProduct(product);
         return response.getStatusCode().is2xxSuccessful();
     }
-
 
     public void deleteProductById(int id) {
         helper.deleteProductById(id);

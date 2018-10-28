@@ -2,19 +2,12 @@ package hska.iwi.eShopMaster.controller;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.oauth.OAuth20Service;
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-import de.hska.vis.webshop.core.database.model.IUser;
 import hska.iwi.eShopMaster.WebShopApi;
-import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
-import hska.iwi.eShopMaster.model.businessLogic.manager.impl.UserManagerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 public class LoginAction extends ActionSupport {
-
     private final static Logger logger = LoggerFactory.getLogger(LoginAction.class);
 
     private static final long serialVersionUID = -983183915002226000L;
@@ -27,8 +20,7 @@ public class LoginAction extends ActionSupport {
 
     private String url;
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 

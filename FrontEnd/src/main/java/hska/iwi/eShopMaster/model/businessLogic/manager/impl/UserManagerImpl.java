@@ -14,24 +14,23 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import org.springframework.http.ResponseEntity;
 
-
 public class UserManagerImpl implements UserManager {
-    UserClient helper;
+    private UserClient helper;
 
     private final static Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
 
     public UserManagerImpl() {
-        helper = Feign.builder().errorDecoder(new UserErrorDecoder()).decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+        helper = Feign.builder()
+                .errorDecoder(new UserErrorDecoder())
+                .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .target(UserClient.class, "http://zuul:8081");
     }
-
 
     public void registerUser(String username, String name, String lastname, String password, Role role) {
         throw new UnsupportedOperationException();
         //User user = new User(username, name, lastname, password, role);
         //helper.saveProduct(user);
     }
-
 
     public IUser getUserByUsername(String username) {
         if (username == null || username.equals("")) {
@@ -56,7 +55,6 @@ public class UserManagerImpl implements UserManager {
     public boolean doesUserAlreadyExist(String username) {
         return this.getUserByUsername(username) != null;
     }
-
 
     public boolean validate(User user) {
         return !user.getFirstname().isEmpty()

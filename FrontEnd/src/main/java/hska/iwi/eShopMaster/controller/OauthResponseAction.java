@@ -6,15 +6,16 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import hska.iwi.eShopMaster.WebShopApi;
-import org.apache.struts2.ServletActionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
 public class OauthResponseAction extends ActionSupport {
-
     private static Logger logger = LoggerFactory.getLogger(OauthResponseAction.class);
+
+    public String state;
+    public String code;
 
     @Override
     public String execute() throws Exception {
@@ -25,12 +26,8 @@ public class OauthResponseAction extends ActionSupport {
                 .scope("openid").debug()
                 .build(WebShopApi.instance());
 
-        String code = ServletActionContext.getRequest().getParameter("code");
-
         OAuth2AccessToken token = service.getAccessToken(code);
-
         Map<String, Object> session = ActionContext.getContext().getSession();
-
         session.put("WebShopAccessToken", token.getAccessToken());
 
         logger.error("\n\n###################################################\n\n");

@@ -5,18 +5,9 @@ import de.hska.vis.webshop.core.database.model.ICategory;
 import java.util.List;
 
 public interface CategoryManager {
+    List<ICategory> getCategories();
 
-	public List<ICategory> getCategories();
-	
-	//public ICategory getCategory(int id);
-	
-	//public ICategory getCategoryByName(String name);
-	
-	public void addCategory(String name);
-	
-	//public void delCategory(Category cat);
-	
-	public void delCategoryById(int id);
+    void addCategory(String name);
 
-	
+    void delCategoryById(int id);
 }

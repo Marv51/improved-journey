@@ -24,7 +24,7 @@ public class WebShopApi extends DefaultApi20 {
 
     @Override
     protected String getAuthorizationBaseUrl() {
-        return "http://localhost:9090/uaa/oauth/authorize";
+        return "http://localhost:8080/uaa/oauth/authorize";
     }
 
     @Override

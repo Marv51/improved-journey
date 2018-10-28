@@ -38,7 +38,7 @@ public class LoginAction extends ActionSupport {
 
         final OAuth20Service service = new ServiceBuilder("acme")
                 .apiSecret("acmesecret")
-                .callback("http://localhost:8787/login")
+                .callback("http://localhost:8787/OauthResponseAction")
                 .state("testing123")
                 .scope("openid").debug()
                 .build(WebShopApi.instance());

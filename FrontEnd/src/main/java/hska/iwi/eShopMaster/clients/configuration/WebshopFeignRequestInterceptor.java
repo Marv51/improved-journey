@@ -13,6 +13,6 @@ public class WebshopFeignRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
-        requestTemplate.header("Authorization", token);
+        requestTemplate.header("Authorization", "Bearer " + token);
     }
 }

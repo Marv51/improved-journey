@@ -9,6 +9,7 @@ import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.ProductClient;
 import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
+import hska.iwi.eShopMaster.clients.configuration.WebshopFeignRequestInterceptor;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.util.List;
 public class ProductManagerImpl implements ProductManager {
     private ProductClient helper;
 
-    public ProductManagerImpl() {
+    public ProductManagerImpl(String token) {
         helper = Feign.builder()
                 .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
-                .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
+                .requestInterceptor(new WebshopFeignRequestInterceptor(token))
                 .encoder(new JacksonEncoder())
                 .target(ProductClient.class, "http://zuul:8081");
     }

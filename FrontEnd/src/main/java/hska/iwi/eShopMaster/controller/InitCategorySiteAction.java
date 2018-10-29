@@ -23,7 +23,7 @@ public class InitCategorySiteAction extends ActionSupport {
         user = (User) session.get("webshop_user");
         boolean isAdmin = true;
         if (user != null && isAdmin) {
-            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
+            CategoryManager categoryManager = new CategoryManagerImpl((String) session.get("WebShopAccessToken"));
             this.setCategories(categoryManager.getCategories());
 
             if (pageToGoTo != null) {

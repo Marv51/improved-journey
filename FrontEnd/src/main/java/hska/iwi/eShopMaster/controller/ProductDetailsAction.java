@@ -31,7 +31,7 @@ public class ProductDetailsAction extends ActionSupport {
         user = (User) session.get("webshop_user");
 
         if (user != null) {
-            ProductManager productManager = new ProductManagerImpl();
+            ProductManager productManager = new ProductManagerImpl((String) session.get("WebShopAccessToken"));
             product = productManager.getProductById(id);
 
             res = "success";

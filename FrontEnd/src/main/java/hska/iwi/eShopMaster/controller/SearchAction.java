@@ -45,11 +45,11 @@ public class SearchAction extends ActionSupport {
                 sMaxPrice = Integer.parseInt(this.searchMaxPrice);
             }
 
-            ProductManager productManager = new ProductManagerImpl();
+            ProductManager productManager = new ProductManagerImpl((String) session.get("WebShopAccessToken"));
             this.products = productManager.getProductsForSearchValues(this.searchDescription, sMinPrice, sMaxPrice);
 
             // Show all categories:
-            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
+            CategoryManager categoryManager = new CategoryManagerImpl((String) session.get("WebShopAccessToken"));
             this.categories = categoryManager.getCategories();
             result = "success";
         }

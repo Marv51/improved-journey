@@ -21,8 +21,7 @@ public class AddCategoryAction extends ActionSupport {
         Map<String, Object> session = ActionContext.getContext().getSession();
         user = (User) session.get("webshop_user");
         if (user != null && (user.getRole().getTyp().equalsIgnoreCase("admin"))) {
-
-            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
+            CategoryManager categoryManager = new CategoryManagerImpl((String) session.get("WebShopAccessToken"));
             // Add category
             categoryManager.addCategory(newCatName);
 
@@ -40,7 +39,7 @@ public class AddCategoryAction extends ActionSupport {
         }
         // Go and get new Category list
         Map<String, Object> session = ActionContext.getContext().getSession();
-        CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
+        CategoryManager categoryManager = new CategoryManagerImpl((String) session.get("WebShopAccessToken"));
         this.setCategories(categoryManager.getCategories());
     }
 

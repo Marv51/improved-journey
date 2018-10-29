@@ -18,7 +18,7 @@ public class DeleteProductAction extends ActionSupport {
         User user = (User) session.get("webshop_user");
 
         if (user != null && (user.getRole().getTyp().equalsIgnoreCase("admin"))) {
-            new ProductManagerImpl().deleteProductById(id);
+            new ProductManagerImpl((String) session.get("WebShopAccessToken")).deleteProductById(id);
             res = "success";
         }
 

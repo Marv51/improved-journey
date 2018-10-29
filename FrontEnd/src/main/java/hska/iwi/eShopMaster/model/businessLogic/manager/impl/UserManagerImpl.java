@@ -4,12 +4,14 @@ import de.hska.vis.webshop.core.database.model.IUser;
 import de.hska.vis.webshop.core.database.model.impl.Role;
 import de.hska.vis.webshop.core.database.model.impl.User;
 import feign.Feign;
+import feign.RequestInterceptor;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
+import hska.iwi.eShopMaster.clients.configuration.WebshopFeignRequestInterceptor;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +23,24 @@ public class UserManagerImpl implements UserManager {
     private UserClient helper;
 
     public UserManagerImpl() {
-        helper = Feign.builder()
+        this.helper = getFeignClient(null);
+    }
+
+    public UserManagerImpl(String token) {
+        helper = getFeignClient(token);
+    }
+
+    private UserClient getFeignClient(String token) {
+        RequestInterceptor requestInterceptor;
+        if (token == null) {
+            requestInterceptor = OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor();
+        } else {
+            requestInterceptor = new WebshopFeignRequestInterceptor(token);
+        }
+
+        return Feign.builder()
                 .errorDecoder(new UserErrorDecoder())
-                .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
+                .requestInterceptor(requestInterceptor)
                 .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .encoder(new JacksonEncoder())
                 .target(UserClient.class, "http://zuul:8081");

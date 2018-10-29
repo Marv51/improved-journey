@@ -29,7 +29,7 @@ public class AddProductAction extends ActionSupport {
         User user = (User) session.get("webshop_user");
 
         if (user != null && (user.getRole().getTyp().equalsIgnoreCase("admin"))) {
-            ProductManager productManager = new ProductManagerImpl();
+            ProductManager productManager = new ProductManagerImpl((String) session.get("WebShopAccessToken"));
             boolean success = productManager.addProduct(getName(), getPriceValue(), getSelectedCategory(), getDetails());
 
             if (success) {
@@ -43,7 +43,7 @@ public class AddProductAction extends ActionSupport {
     @Override
     public void validate() {
         Map<String, Object> session = ActionContext.getContext().getSession();
-        CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
+        CategoryManager categoryManager = new CategoryManagerImpl((String) session.get("WebShopAccessToken"));
         setCategories(categoryManager.getCategories());
 
         // Validate name:

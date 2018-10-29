@@ -17,6 +17,11 @@ public class User implements IUser, Serializable {
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
+    // dumb column unused by us and always the same value as "firstname" ... should be
+    // therefore only here to support the legacy format and that no exceptions occur because it can't be null
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
@@ -40,6 +45,7 @@ public class User implements IUser, Serializable {
         this();
         this.username = username;
         this.firstname = firstname;
+        this.name = firstname;
         this.lastname = lastname;
         this.password = password;
         this.role = role;
@@ -50,6 +56,7 @@ public class User implements IUser, Serializable {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
+        this.name = firstname;
         this.lastname = lastname;
         this.password = password;
         this.role = role;
@@ -83,6 +90,7 @@ public class User implements IUser, Serializable {
     @Override
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+        this.name = firstname;
     }
 
     @Override
@@ -113,5 +121,14 @@ public class User implements IUser, Serializable {
     @Override
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.firstname = name;
     }
 }

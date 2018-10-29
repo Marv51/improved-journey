@@ -49,7 +49,7 @@ public class SearchAction extends ActionSupport {
             this.products = productManager.getProductsForSearchValues(this.searchDescription, sMinPrice, sMaxPrice);
 
             // Show all categories:
-            CategoryManager categoryManager = new CategoryManagerImpl();
+            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
             this.categories = categoryManager.getCategories();
             result = "success";
         }

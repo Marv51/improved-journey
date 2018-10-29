@@ -27,7 +27,7 @@ public class ListAllProductsAction extends ActionSupport {
 
         if (user != null) {
             System.out.println("list all products!");
-            CategoryManager categoryManager = new CategoryManagerImpl();
+            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
             List<ICategory> categories = categoryManager.getCategories();
             this.products = transformList(categories);
             result = "success";

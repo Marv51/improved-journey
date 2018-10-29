@@ -22,7 +22,7 @@ public class DeleteCategoryAction extends ActionSupport {
 
         if (user != null && (user.getRole().getTyp().equalsIgnoreCase("admin"))) {
             // Helper inserts new Category in DB:
-            CategoryManager categoryManager = new CategoryManagerImpl();
+            CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
             categoryManager.delCategoryById(catId);
             categories = categoryManager.getCategories();
             res = "success";

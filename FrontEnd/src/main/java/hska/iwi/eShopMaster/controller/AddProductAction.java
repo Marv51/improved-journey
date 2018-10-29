@@ -42,7 +42,8 @@ public class AddProductAction extends ActionSupport {
 
     @Override
     public void validate() {
-        CategoryManager categoryManager = new CategoryManagerImpl();
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        CategoryManager categoryManager = new CategoryManagerImpl((String)session.get("WebShopAccessToken"));
         setCategories(categoryManager.getCategories());
 
         // Validate name:

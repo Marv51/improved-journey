@@ -8,6 +8,7 @@ import feign.Response;
 import feign.codec.ErrorDecoder;
 import feign.jackson.JacksonDecoder;
 import hska.iwi.eShopMaster.clients.UserClient;
+import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class UserManagerImpl implements UserManager {
     public UserManagerImpl() {
         helper = Feign.builder()
                 .errorDecoder(new UserErrorDecoder())
+                .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
                 .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
                 .target(UserClient.class, "http://zuul:8081");
     }

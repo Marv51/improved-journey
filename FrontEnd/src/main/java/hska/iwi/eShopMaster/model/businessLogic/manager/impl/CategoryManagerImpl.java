@@ -6,6 +6,7 @@ import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.CategoryClient;
+import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
 import hska.iwi.eShopMaster.model.businessLogic.manager.CategoryManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 
@@ -17,6 +18,7 @@ public class CategoryManagerImpl implements CategoryManager {
     public CategoryManagerImpl() {
         helper = Feign.builder()
                 .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+                .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
                 .encoder(new JacksonEncoder())
                 .target(CategoryClient.class, "http://zuul:8081");
     }

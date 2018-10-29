@@ -5,10 +5,16 @@ import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import de.hska.vis.webshop.core.database.model.IUser;
+import de.hska.vis.webshop.core.database.model.impl.Role;
+import de.hska.vis.webshop.core.database.model.impl.User;
 import hska.iwi.eShopMaster.WebShopApi;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Base64;
 import java.util.Map;
 
 public class OauthResponseAction extends ActionSupport {
@@ -30,9 +36,15 @@ public class OauthResponseAction extends ActionSupport {
         Map<String, Object> session = ActionContext.getContext().getSession();
         session.put("WebShopAccessToken", token.getAccessToken());
 
+        IUser user = decodeJWT(token.getAccessToken());
+        session.put("webshop_user", user);
+        session.put("message", "");
+
         logger.error("\n\n###################################################\n\n");
         logger.error(token.getRawResponse());
         logger.error("\n\n###################################################\n\n");
+
+
 /*
     // Return string:
     String result = "input";
@@ -71,4 +83,28 @@ public class OauthResponseAction extends ActionSupport {
         return "success";
     }
 
+    private IUser decodeJWT(String accessToken) {
+        String[] split_string = accessToken.split("\\.");
+        String base64EncodedHeader = split_string[0];
+        String base64EncodedBody = split_string[1];
+        String base64EncodedSignature = split_string[2];
+
+        Base64.Decoder base64Url = Base64.getDecoder();
+        String header = new String(base64Url.decode(base64EncodedHeader));
+        String body = new String(base64Url.decode(base64EncodedBody));
+
+        // JWT Header : {"alg":"RS256","typ":"JWT"}
+        // JWT Body : {"exp":1540847199,"user_name":"special","authorities":["ADMIN"],"jti":"f9c9a0c8-9aea-4916-912e-1f83aa644572","client_id":"acme","scope":["openid"]}
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode node = mapper.readTree(body);
+            String username = node.get("user_name").asText();
+            String[] authorities = mapper.readValue(node.get("authorities"), String[].class);
+            return new User(username, username, username, "", new Role(authorities[0], 0));
+        } catch (Exception e) {
+            logger.error("There is something wrong with the OAuth Token", e);
+            throw new IllegalArgumentException(e);
+        }
+    }
 }

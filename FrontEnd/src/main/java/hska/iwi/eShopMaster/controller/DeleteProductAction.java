@@ -1,44 +1,36 @@
 package hska.iwi.eShopMaster.controller;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionSupport;
 import de.hska.vis.webshop.core.database.model.impl.User;
+import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
 
 import java.util.Map;
 
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionSupport;
-import hska.iwi.eShopMaster.model.businessLogic.manager.impl.ProductManagerImpl;
-
 public class DeleteProductAction extends ActionSupport {
+    private static final long serialVersionUID = 3666796923937616729L;
+    private int id;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3666796923937616729L;
+    public String execute() throws Exception {
+        String res = "input";
 
-	private int id;
+        Map<String, Object> session = ActionContext.getContext().getSession();
+        User user = (User) session.get("webshop_user");
 
-	public String execute() throws Exception {
-		
-		String res = "input";
-		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		User user = (User) session.get("webshop_user");
-		
-		if(user != null && (user.getRole().getTyp().equals("admin"))) {
-			new ProductManagerImpl().deleteProductById(id);
-			res = "success";
-		}
-		
-		return res;
-		
-	}
+        if (user != null && (user.getRole().getTyp().equals("admin"))) {
+            new ProductManagerImpl().deleteProductById(id);
+            res = "success";
+        }
 
-	public int getId() {
-		return id;
-	}
+        return res;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
 }

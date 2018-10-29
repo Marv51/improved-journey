@@ -1,5 +1,4 @@
 version: '3.3'
-
 services:
     database:
         image: mavogel/hska-vis-web-shop-db-image
@@ -54,15 +53,17 @@ services:
         depends_on:
             - "eureka"
         links:
+            - "auth:auth"
             - "eureka:eureka"
 
     zuul:
         build: Zuul-Server/.
         ports:
-            - "8080:8081"
+            - "8081:8081"
         depends_on:
             - "eureka"
         links:
+            - "auth:auth"
             - "eureka:eureka"
 
     front-end:
@@ -75,10 +76,13 @@ services:
             - "zuul"
       links:
             - "zuul:zuul"
+            - "auth:auth"
 
     auth:
         build: Auth-Server/.
         depends_on:
-            - "eureka"
+            - "database"
+        ports:
+            - "8080:8080"
         links:
-            - "eureka:eureka"
+            - "database:database"

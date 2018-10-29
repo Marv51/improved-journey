@@ -16,6 +16,7 @@
         <action name="LoginAction" class="hska.iwi.eShopMaster.controller.LoginAction">
             <result name="success">/pages/start.jsp</result>
             <result name="input">index.jsp</result>
+            <result name="redirect" type="redirect">${url}</result>
         </action>
 
         <!-- Register: -->
@@ -76,6 +77,12 @@
         <action name="DeleteCategoryAction" class="hska.iwi.eShopMaster.controller.DeleteCategoryAction">
             <result name="input" type="redirect">LogoutAction</result>
             <result name="success">/pages/categories.jsp</result>
+        </action>
+
+        <!-- Redirect from Auth server -->
+        <action name="OauthResponseAction" class="hska.iwi.eShopMaster.controller.OauthResponseAction">
+            <result name="success" type="redirect">listAllProducts</result>
+            <result name="input" type="redirect">LogoutAction</result>
         </action>
 
         <action name="index">

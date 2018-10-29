@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ListAllProductsAction extends ActionSupport {
-
     private static final long serialVersionUID = -94109228677381902L;
 
     User user;

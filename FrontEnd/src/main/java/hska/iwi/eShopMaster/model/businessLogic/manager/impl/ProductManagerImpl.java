@@ -8,6 +8,7 @@ import feign.Feign;
 import feign.jackson.JacksonDecoder;
 import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.ProductClient;
+import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
 import hska.iwi.eShopMaster.model.businessLogic.manager.ProductManager;
 import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,10 @@ public class ProductManagerImpl implements ProductManager {
     private ProductClient helper;
 
     public ProductManagerImpl() {
-        helper = Feign.builder().decoder(new ResponseEntityDecoder(new JacksonDecoder())).encoder(new JacksonEncoder())
+        helper = Feign.builder()
+                .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+                .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
+                .encoder(new JacksonEncoder())
                 .target(ProductClient.class, "http://zuul:8081");
     }
 
@@ -38,7 +42,6 @@ public class ProductManagerImpl implements ProductManager {
         return helper.getProductById(id).getBody();
     }
 
-
     public boolean addProduct(String name, double price, @NotNull ICategory category, String details) {
         IProduct product;
         if (details == null) {
@@ -50,7 +53,6 @@ public class ProductManagerImpl implements ProductManager {
         ResponseEntity<Void> response = helper.saveProduct(product);
         return response.getStatusCode().is2xxSuccessful();
     }
-
 
     public void deleteProductById(int id) {
         helper.deleteProductById(id);

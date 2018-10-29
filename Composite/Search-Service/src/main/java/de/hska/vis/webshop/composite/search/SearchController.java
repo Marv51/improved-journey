@@ -24,8 +24,8 @@ import java.util.Map;
 
 @RestController
 public class SearchController {
+    private static final String ALL_CHARS_REGEX = ".*";
 
-    public static final String ALL_CHARS_REGEX = ".*";
     @Autowired
     public UserClient userClient;
     @Autowired

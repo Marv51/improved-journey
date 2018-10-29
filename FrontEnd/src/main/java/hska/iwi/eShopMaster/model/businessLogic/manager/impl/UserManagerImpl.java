@@ -7,6 +7,7 @@ import feign.Feign;
 import feign.Response;
 import feign.codec.ErrorDecoder;
 import feign.jackson.JacksonDecoder;
+import feign.jackson.JacksonEncoder;
 import hska.iwi.eShopMaster.clients.UserClient;
 import hska.iwi.eShopMaster.clients.configuration.OAuth2FeignClientConfiguration;
 import hska.iwi.eShopMaster.model.businessLogic.manager.UserManager;
@@ -16,22 +17,21 @@ import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
 import org.springframework.http.ResponseEntity;
 
 public class UserManagerImpl implements UserManager {
-    private UserClient helper;
-
     private final static Logger logger = LoggerFactory.getLogger(UserManagerImpl.class);
+    private UserClient helper;
 
     public UserManagerImpl() {
         helper = Feign.builder()
                 .errorDecoder(new UserErrorDecoder())
                 .requestInterceptor(OAuth2FeignClientConfiguration.oauth2FeignRequestInterceptor())
                 .decoder(new ResponseEntityDecoder(new JacksonDecoder()))
+                .encoder(new JacksonEncoder())
                 .target(UserClient.class, "http://zuul:8081");
     }
 
-    public void registerUser(String username, String name, String lastname, String password, Role role) {
-        throw new UnsupportedOperationException();
-        //User user = new User(username, name, lastname, password, role);
-        //helper.saveProduct(user);
+    public boolean registerUser(String username, String name, String lastname, String password) {
+        User user = new User(username, name, lastname, password, new Role("USER", 1));
+        return helper.saveUser(user).getStatusCode().is2xxSuccessful();
     }
 
     public IUser getUserByUsername(String username) {

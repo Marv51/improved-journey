@@ -1,5 +1,7 @@
 package de.hska.vis.webshop.zuul.security;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Bean;
@@ -37,6 +39,8 @@ import java.util.regex.Pattern;
 @EnableResourceServer
 @Order(value = 0)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfiguration.class);
+
     private static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
     private static final String CSRF_HEADER_NAME = "X-XSRF-TOKEN";
 
@@ -83,7 +87,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private RequestMatcher csrfRequestMatcher() {
         return new RequestMatcher() {
             // Always allow the HTTP GET method
-            private final Pattern allowedMethods = Pattern.compile("^(GET|HEAD|OPTIONS|TRACE)$");
+            private final Pattern allowedMethods = Pattern.compile("^(GET|HEAD|OPTIONS|TRACE|POST|PUT|DELETE)$");
 
             // Disable CSFR protection on the following urls:
             private final AntPathRequestMatcher[] requestMatchers = { new AntPathRequestMatcher("/uaa/**") };
@@ -91,6 +95,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             @Override
             public boolean matches(HttpServletRequest request) {
                 if (allowedMethods.matcher(request.getMethod()).matches()) {
+                    LOGGER.info("Found: " + request.getMethod() + " therefore allow csrf");
                     return false;
                 }
 

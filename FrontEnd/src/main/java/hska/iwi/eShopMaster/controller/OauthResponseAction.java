@@ -36,66 +36,46 @@ public class OauthResponseAction extends ActionSupport {
         Map<String, Object> session = ActionContext.getContext().getSession();
         session.put("WebShopAccessToken", token.getAccessToken());
 
-        IUser user = decodeJWT(token.getAccessToken());
-        session.put("webshop_user", user);
-        session.put("message", "");
-
-        logger.error("\n\n###################################################\n\n");
-        logger.error(token.getRawResponse());
-        logger.error("\n\n###################################################\n\n");
-
-
-/*
-    // Return string:
-    String result = "input";
-
-    UserManager userManager = new UserManagerImpl();
-
-    // Get user from DB:
-    IUser user = userManager.getUserByUsername(getUsername());
-    // Does user exist?
-        if (user != null) {
-        // Is the password correct?
-        if (user.getPassword().equals(getPassword())) {
-            // Get session to save user role and login:
-            Map<String, Object> session = ActionContext.getContext().getSession();
-
-            // Save user object in session:
+        try {
+            IUser user = decodeJWT(token.getAccessToken());
             session.put("webshop_user", user);
             session.put("message", "");
-            firstname = user.getFirstname();
-            lastname = user.getLastname();
-            role = user.getRole().getTyp();
-            result = "success";
-        } else {
-            addActionError(getText("error.password.wrong"));
-            logger.error("PASSWORD IS WRONG");
+        } catch (IllegalArgumentException e) {
+            logger.error("Error while decoding token", e);
+            return "inuput";
         }
-    } else {
-        // user does not exist
-        addActionError(getText("error.username.wrong"));
-        logger.error("ERROR USERNAME WRONG");
-    }
-        logger.error("LOGGED IN SUCCESSFULLY");
-
-
-        return result;*/
         return "success";
     }
 
-    private IUser decodeJWT(String accessToken) {
+    private IUser decodeJWT(String accessToken) throws IllegalArgumentException {
         String[] split_string = accessToken.split("\\.");
-        String base64EncodedHeader = split_string[0];
+        // String base64EncodedHeader = split_string[0];
         String base64EncodedBody = split_string[1];
-        String base64EncodedSignature = split_string[2];
+        // String base64EncodedSignature = split_string[2];
 
         Base64.Decoder base64Url = Base64.getDecoder();
-        String header = new String(base64Url.decode(base64EncodedHeader));
+        // String header = new String(base64Url.decode(base64EncodedHeader));
         String body = new String(base64Url.decode(base64EncodedBody));
 
-        // JWT Header : {"alg":"RS256","typ":"JWT"}
-        // JWT Body : {"exp":1540847199,"user_name":"special","authorities":["ADMIN"],"jti":"f9c9a0c8-9aea-4916-912e-1f83aa644572","client_id":"acme","scope":["openid"]}
+        // JWT Header :
+        /*
+        {
+            "alg":"RS256",
+            "typ":"JWT"
+        }
+         */
+        // JWT Body :
+        /*
+        {
+            "exp":1540847199,
+            "user_name":"special",
+            "authorities":["ADMIN"],
+            "jti":"f9c9a0c8-9aea-4916-912e-1f83aa644572",
+            "client_id":"acme",
+            "scope":["openid"]}
+         */
 
+        // decode JSON object
         ObjectMapper mapper = new ObjectMapper();
         try {
             JsonNode node = mapper.readTree(body);

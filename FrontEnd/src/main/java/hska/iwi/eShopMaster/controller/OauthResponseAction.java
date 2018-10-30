@@ -47,6 +47,26 @@ public class OauthResponseAction extends ActionSupport {
         return "success";
     }
 
+    /**
+     * Decode the JWT token from the oauth client.
+     * <p>
+     * Here we only decode the JWT Token to get the username, so we have something to show to the user easily.
+     * DISCLAIMER:
+     * We do NOT verify the token here, and probably never ourselves. We give the token to the FeignClients
+     * {@link hska.iwi.eShopMaster.clients.UserClient}, {@link hska.iwi.eShopMaster.clients.CategoryClient}
+     * and {@link hska.iwi.eShopMaster.clients.ProductClient} which authenticate their requests with this token.
+     * It is then checked automatically by the receiver of those requests. This is usually the Zuul-Server.
+     * Therefore we don't need to validate the token by ourselves.
+     *
+     * @param accessToken the access token from the auth callback this are 3 Bas64 encoded string parts, with a "."
+     *                    as a divider; decoded the 3 parts are:
+     *                    * Header
+     *                    * Body
+     *                    * Signature
+     * @return an IUser object with the information from the JWT body
+     * @throws IllegalArgumentException is thrown when the JSON decoding finds an error somewhere, i.e.
+     *                                  when the token is not correct
+     */
     private IUser decodeJWT(String accessToken) throws IllegalArgumentException {
         String[] split_string = accessToken.split("\\.");
         // String base64EncodedHeader = split_string[0];

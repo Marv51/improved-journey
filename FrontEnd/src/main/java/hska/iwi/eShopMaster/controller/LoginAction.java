@@ -12,8 +12,8 @@ public class LoginAction extends ActionSupport {
     @Override
     public String execute() throws Exception {
 
-        final OAuth20Service service = new ServiceBuilder("acme")
-                .apiSecret("acmesecret")
+        final OAuth20Service service = new ServiceBuilder("iwi-Webshop")
+                .apiSecret("thisisverysecure")
                 .callback("http://localhost:8787/OauthResponseAction")
                 .state("testing123")
                 .scope("openid").debug()

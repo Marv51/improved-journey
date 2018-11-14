@@ -22,15 +22,21 @@ public class OauthResponseAction extends ActionSupport {
 
     public String state;
     public String code;
+    public String error = null;
+    public String error_description;
 
     @Override
     public String execute() throws Exception {
-        final OAuth20Service service = new ServiceBuilder("acme")
-                .apiSecret("acmesecret")
+        final OAuth20Service service = new ServiceBuilder("iwi-Webshop")
+                .apiSecret("thisisverysecure")
                 .callback("http://localhost:8787/OauthResponseAction")
                 .state("testing123")
                 .scope("openid").debug()
                 .build(WebShopApi.instance());
+
+        if (error != null){
+            return "input";
+        }
 
         OAuth2AccessToken token = service.getAccessToken(code);
         Map<String, Object> session = ActionContext.getContext().getSession();
@@ -42,7 +48,7 @@ public class OauthResponseAction extends ActionSupport {
             session.put("message", "");
         } catch (IllegalArgumentException e) {
             logger.error("Error while decoding token", e);
-            return "inuput";
+            return "input";
         }
         return "success";
     }

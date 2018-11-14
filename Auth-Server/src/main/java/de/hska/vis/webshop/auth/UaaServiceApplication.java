@@ -101,7 +101,14 @@ public class UaaServiceApplication extends WebMvcConfigurerAdapter {
                     .withClient("acme")
                     .secret("acmesecret")
                     .authorizedGrantTypes("authorization_code", "refresh_token", "password")
+                    .scopes("openid")
+                    .and()
+                    .withClient("iwi-Webshop")
+                    .secret("thisisverysecure")
+                    .authorizedGrantTypes("authorization_code", "refresh_token")
                     .scopes("openid");
+
+
         }
 
         @Override

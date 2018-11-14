@@ -40,6 +40,7 @@
         <action name="SearchAction" class="hska.iwi.eShopMaster.controller.SearchAction">
             <result name="success">/pages/start.jsp</result>
             <result name="input">/pages/start.jsp</result>
+            <result name="login">/index.jsp</result>
         </action>
 
         <!-- Init Category:  -->
